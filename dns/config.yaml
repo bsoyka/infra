@@ -1,0 +1,19 @@
+---
+providers:
+    zone_config:
+        class: octodns.provider.yaml.YamlProvider
+        directory: dns/zones
+        default_ttl: 300
+        enforce_order: True
+    cloudflare:
+        class: octodns_cloudflare.CloudflareProvider
+        token: env/CLOUDFLARE_TOKEN
+        account_id: env/CLOUDFLARE_ACCOUNT_ID
+        pagerules: false
+
+zones:
+    "*":
+        sources:
+            - zone_config
+        targets:
+            - cloudflare
