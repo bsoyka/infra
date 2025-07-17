@@ -1,0 +1,20 @@
+---
+"":
+    - octodns:
+          cloudflare:
+              auto-ttl: true
+              proxied: true
+      type: ALIAS
+      value: themountainspalette.etsy.com.
+    - octodns:
+          cloudflare:
+              auto-ttl: true
+      type: TXT
+      value: facebook-domain-verification=9nbdlha3abztb8yao15cudk9woscd0
+www:
+    octodns:
+        cloudflare:
+            auto-ttl: true
+            proxied: true
+    type: CNAME
+    value: themountainspalette.etsy.com.
