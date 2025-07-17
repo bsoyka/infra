@@ -1,0 +1,7 @@
+[project]
+name = "bsoyka-infra"
+version = "0.1.0"
+description = "Infrastructure-as-code for my personal projects"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
