@@ -1,23 +1,24 @@
 ---
 "":
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: TXT
+  value: v=spf1 -all
+"*":
   - octodns:
       cloudflare:
         auto-ttl: true
         proxied: true
-    type: ALIAS
-    value: bsoyka.me.
-  - octodns:
-      cloudflare:
-        auto-ttl: true
-    type: TXT
-    value: v=spf1 -all
-"*":
-  octodns:
-    cloudflare:
-      auto-ttl: true
-      proxied: true
-  type: CNAME
-  value: bsoyka.me.
+    type: AAAA
+    value: "100::"
+  - type: URLFWD
+    value:
+      code: 301
+      masking: 2
+      path: /*
+      query: 0
+      target: https://teamup.com/kst99ae9nurap68yw2
 "*._domainkey":
   octodns:
     cloudflare:
