@@ -95,6 +95,14 @@ api:
             proxied: true
     type: A
     value: 66.179.93.20
+blog:
+    type: URLFWD
+    value:
+        code: 301
+        masking: 2
+        path: /*
+        query: 0
+        target: https://bsoyka.me/blog/$1
 bounce.photos:
     octodns:
         cloudflare:
@@ -127,12 +135,19 @@ gallery:
     type: CNAME
     value: domain.pixieset.com.
 gh:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-            proxied: true
-    type: CNAME
-    value: bsoyka.me.
+    - octodns:
+          cloudflare:
+              auto-ttl: true
+              proxied: true
+      type: CNAME
+      value: bsoyka.me.
+    - type: URLFWD
+      value:
+          code: 301
+          masking: 2
+          path: /*
+          query: 0
+          target: https://github.com/bsoyka/$1
 hello._pka: # PGP key publishing
     octodns:
         cloudflare:

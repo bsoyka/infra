@@ -9,7 +9,6 @@ providers:
         class: octodns_cloudflare.CloudflareProvider
         token: env/CLOUDFLARE_TOKEN
         account_id: env/CLOUDFLARE_ACCOUNT_ID
-        pagerules: false
 
 zones:
     "benscalendar.work.":
@@ -30,6 +29,7 @@ zones:
         targets:
             - cloudflare
     "mountainspalette.com.":
+        lenient: true
         sources:
             - zone_config
         targets:

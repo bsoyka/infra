@@ -11,10 +11,24 @@
               auto-ttl: true
       type: TXT
       value: facebook-domain-verification=9nbdlha3abztb8yao15cudk9woscd0
+    - type: URLFWD
+      value:
+          code: 301
+          masking: 2
+          path: /*
+          query: 0
+          target: https://themountainspalette.etsy.com/$1
 www:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-            proxied: true
-    type: CNAME
-    value: themountainspalette.etsy.com.
+    - octodns:
+          cloudflare:
+              auto-ttl: true
+              proxied: true
+      type: CNAME
+      value: themountainspalette.etsy.com.
+    - type: URLFWD
+      value:
+          code: 301
+          masking: 2
+          path: /*
+          query: 0
+          target: https://themountainspalette.etsy.com/$1
