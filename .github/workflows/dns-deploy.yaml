@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'dns/**'
+  workflow_dispatch:
 
 jobs:
   octodns-sync:
