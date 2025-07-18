@@ -1,4 +1,9 @@
 ---
+manager:
+    plan_outputs:
+        html:
+            class: octodns.provider.plan.PlanMarkdown
+
 providers:
     zone_config:
         class: octodns.provider.yaml.YamlProvider
