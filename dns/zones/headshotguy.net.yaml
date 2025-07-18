@@ -1,15 +1,15 @@
 ---
 "":
-    octodns:
-        cloudflare:
-            auto-ttl: true
-            proxied: true
-    type: ALIAS
-    value: bsoyka.pixieset.com.
+  octodns:
+    cloudflare:
+      auto-ttl: true
+      proxied: true
+  type: ALIAS
+  value: bsoyka.pixieset.com.
 www:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-            proxied: true
-    type: CNAME
-    value: bsoyka.pixieset.com.
+  octodns:
+    cloudflare:
+      auto-ttl: true
+      proxied: true
+  type: CNAME
+  value: bsoyka.pixieset.com.

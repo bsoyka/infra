@@ -1,41 +1,41 @@
 ---
 manager:
-    plan_outputs:
-        html:
-            class: octodns.provider.plan.PlanMarkdown
+  plan_outputs:
+    html:
+      class: octodns.provider.plan.PlanMarkdown
 
 providers:
-    zone_config:
-        class: octodns.provider.yaml.YamlProvider
-        directory: dns/zones
-        default_ttl: 300
-        enforce_order: True
-    cloudflare:
-        class: octodns_cloudflare.CloudflareProvider
-        token: env/CLOUDFLARE_TOKEN
-        account_id: env/CLOUDFLARE_ACCOUNT_ID
+  zone_config:
+    class: octodns.provider.yaml.YamlProvider
+    directory: dns/zones
+    default_ttl: 300
+    enforce_order: True
+  cloudflare:
+    class: octodns_cloudflare.CloudflareProvider
+    token: env/CLOUDFLARE_TOKEN
+    account_id: env/CLOUDFLARE_ACCOUNT_ID
 
 zones:
-    "benscalendar.work.":
-        sources:
-            - zone_config
-        targets:
-            - cloudflare
-    "bsoyka.me.":
-        # photos.bsoyka.me requires both a CNAME and a TXT, which octoDNS doesn't like.
-        lenient: true
-        sources:
-            - zone_config
-        targets:
-            - cloudflare
-    "headshotguy.net.":
-        sources:
-            - zone_config
-        targets:
-            - cloudflare
-    "mountainspalette.com.":
-        lenient: true
-        sources:
-            - zone_config
-        targets:
-            - cloudflare
+  "benscalendar.work.":
+    sources:
+      - zone_config
+    targets:
+      - cloudflare
+  "bsoyka.me.":
+    # photos.bsoyka.me requires both a CNAME and a TXT, which octoDNS doesn't like.
+    lenient: true
+    sources:
+      - zone_config
+    targets:
+      - cloudflare
+  "headshotguy.net.":
+    sources:
+      - zone_config
+    targets:
+      - cloudflare
+  "mountainspalette.com.":
+    lenient: true
+    sources:
+      - zone_config
+    targets:
+      - cloudflare

@@ -1,241 +1,241 @@
 ---
 "":
-    - octodns:
-          cloudflare:
-              auto-ttl: true
-              proxied: true
-      type: AAAA
-      value: "100::"
-    - ttl: 3600
-      type: MX
-      values:
-          - exchange: mx01.mail.icloud.com.
-            preference: 10
-          - exchange: mx02.mail.icloud.com.
-            preference: 10
-    - ttl: 3600
-      type: TXT
-      values:
-          - abuseipdb-verification=fBJQRaKN
-          - apple-domain=95jSfw1eSMgiCbnX
-          - apple-domain=GlJq0rCqk0wARSgv
-          - apple-domain=Mmk69XPD4Sj7l2cn
-          - google-site-verification=div3eS2o7A0sZgTmGk_CrQ8ZzbxvhWhcXWb-1l1iT7U
-          - keybase-site-verification=8mkbKsdi1n4xnqWPXlqea0nQ3r29ltiNcSn1_TugKvU
-          - pinterest-site-verification=6743ee9d28ca9087c198e888f0554028
-          - v=spf1 include:icloud.com ~all
-32cgak2j6zrodgxbqmu7bkpydihgtiah._domainkey.photos:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: CNAME
-    value: 32cgak2j6zrodgxbqmu7bkpydihgtiah.dkim.custom-email-domain.stripe.com.
-55ig7coarsaa4kyt672rpplv3xrgnmct._domainkey.photos:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: CNAME
-    value: 55ig7coarsaa4kyt672rpplv3xrgnmct.dkim.custom-email-domain.stripe.com.
-_atproto: # Bluesky verification
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: TXT
-    value: did=did:plc:qmjmer2bnqktri7d572rd22z
-_dmarc.mail:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: TXT
-    value: v=DMARC1\; p=quarantine\; adkim=s
-_dmarc.photos:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: TXT
-    value: v=DMARC1\; p=none
-_doppler_zvsrldgyfvua4:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: TXT
-    value: Cn1GYDQk9TdSoWR04xbKFOwqs1YOD0Px
-_github-challenge-mystery-egg:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: TXT
-    value: 0b43a86b06
-_github-challenge-mystery-egg.mysteryegg:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: TXT
-    value: 8880f8886f
-_github-pages-challenge-bsoyka:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: TXT
-    value: 05613dad04b49e889792dbcef66db9
-_minecraft._tcp.mc:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: SRV
-    value:
-        port: 24812
-        priority: 0
-        target: mc.bsoyka.me.
-        weight: 0
-api:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-            proxied: true
-    type: A
-    value: 66.179.93.20
-blog:
-    type: URLFWD
-    value:
-        code: 301
-        masking: 2
-        path: /*
-        query: 0
-        target: https://bsoyka.me/blog/$1
-bounce.photos:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: CNAME
-    value: custom-email-domain.stripe.com.
-dk1._domainkey.mail:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: CNAME
-    value: dk1._domainkey.anonaddy.me.
-dk2._domainkey.mail:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: CNAME
-    value: dk2._domainkey.anonaddy.me.
-evil:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-            proxied: true
-    type: CNAME
-    value: evil.pages.dev.
-gallery:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: CNAME
-    value: domain.pixieset.com.
-gh:
-    - octodns:
-          cloudflare:
-              auto-ttl: true
-              proxied: true
-      type: CNAME
-      value: bsoyka.me.
-    - type: URLFWD
-      value:
-          code: 301
-          masking: 2
-          path: /*
-          query: 0
-          target: https://github.com/bsoyka/$1
-hello._pka: # PGP key publishing
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: TXT
-    value: v=pka1\;fpr=0CA7CC16A64B68F3048EE8FEA5E726D5A65228EA\;uri=https://bsoyka.me/key.asc
-jcljrmdds7wblxqjzn5kenl324szs62d._domainkey.photos:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: CNAME
-    value: jcljrmdds7wblxqjzn5kenl324szs62d.dkim.custom-email-domain.stripe.com.
-jizbuf4gmk55h3inxhfl2crqb3vlwpe7._domainkey.photos:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: CNAME
-    value: jizbuf4gmk55h3inxhfl2crqb3vlwpe7.dkim.custom-email-domain.stripe.com.
-mail:
-    - octodns:
-          cloudflare:
-              auto-ttl: true
-      type: MX
-      values:
-          - exchange: mail.anonaddy.me.
-            preference: 10
-          - exchange: mail2.anonaddy.me.
-            preference: 20
-    - octodns:
-          cloudflare:
-              auto-ttl: true
-      type: TXT
-      value: v=spf1 include:spf.anonaddy.me -all
-mc:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: A
-    value: 51.81.50.202
-medium:
-    - octodns:
-          cloudflare:
-              auto-ttl: true
-      type: A
-      values:
-          - 162.159.152.4
-          - 162.159.153.4
-    - octodns:
-          cloudflare:
-              auto-ttl: true
-      type: TXT
-      value: pinterest-site-verification=6743ee9d28ca9087c198e888f0554028
-mqtggxlhtf6til3zkdptjawbizsrmofr._domainkey.photos:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: CNAME
-    value: mqtggxlhtf6til3zkdptjawbizsrmofr.dkim.custom-email-domain.stripe.com.
-mysteryegg:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-            proxied: true
-    type: CNAME
-    value: mystery-egg.pages.dev.
-photos:
-    - octodns:
-          cloudflare:
-              auto-ttl: true
-      type: CNAME
-      value: domain.pixieset.com.
-    - ttl: 3600
-      type: TXT
-      value: stripe-verification=e60b9386772407e02c0729f3632f18b4de4c5868ef9e5ba428fa62c6ba8f2d89
-sig1._domainkey:
-    ttl: 3600
-    type: CNAME
-    value: sig1.dkim.bsoyka.me.at.icloudmailadmin.com.
-u75lkntaf5tjxpxi4ly2bh7vnfye472y._domainkey.photos:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-    type: CNAME
-    value: u75lkntaf5tjxpxi4ly2bh7vnfye472y.dkim.custom-email-domain.stripe.com.
-www:
-    octodns:
-        cloudflare:
-            auto-ttl: true
-            proxied: true
+  - octodns:
+      cloudflare:
+        auto-ttl: true
+        proxied: true
     type: AAAA
     value: "100::"
+  - ttl: 3600
+    type: MX
+    values:
+      - exchange: mx01.mail.icloud.com.
+        preference: 10
+      - exchange: mx02.mail.icloud.com.
+        preference: 10
+  - ttl: 3600
+    type: TXT
+    values:
+      - abuseipdb-verification=fBJQRaKN
+      - apple-domain=95jSfw1eSMgiCbnX
+      - apple-domain=GlJq0rCqk0wARSgv
+      - apple-domain=Mmk69XPD4Sj7l2cn
+      - google-site-verification=div3eS2o7A0sZgTmGk_CrQ8ZzbxvhWhcXWb-1l1iT7U
+      - keybase-site-verification=8mkbKsdi1n4xnqWPXlqea0nQ3r29ltiNcSn1_TugKvU
+      - pinterest-site-verification=6743ee9d28ca9087c198e888f0554028
+      - v=spf1 include:icloud.com ~all
+32cgak2j6zrodgxbqmu7bkpydihgtiah._domainkey.photos:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: 32cgak2j6zrodgxbqmu7bkpydihgtiah.dkim.custom-email-domain.stripe.com.
+55ig7coarsaa4kyt672rpplv3xrgnmct._domainkey.photos:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: 55ig7coarsaa4kyt672rpplv3xrgnmct.dkim.custom-email-domain.stripe.com.
+_atproto: # Bluesky verification
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: TXT
+  value: did=did:plc:qmjmer2bnqktri7d572rd22z
+_dmarc.mail:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: TXT
+  value: v=DMARC1\; p=quarantine\; adkim=s
+_dmarc.photos:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: TXT
+  value: v=DMARC1\; p=none
+_doppler_zvsrldgyfvua4:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: TXT
+  value: Cn1GYDQk9TdSoWR04xbKFOwqs1YOD0Px
+_github-challenge-mystery-egg:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: TXT
+  value: 0b43a86b06
+_github-challenge-mystery-egg.mysteryegg:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: TXT
+  value: 8880f8886f
+_github-pages-challenge-bsoyka:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: TXT
+  value: 05613dad04b49e889792dbcef66db9
+_minecraft._tcp.mc:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: SRV
+  value:
+    port: 24812
+    priority: 0
+    target: mc.bsoyka.me.
+    weight: 0
+api:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+      proxied: true
+  type: A
+  value: 66.179.93.20
+blog:
+  type: URLFWD
+  value:
+    code: 301
+    masking: 2
+    path: /*
+    query: 0
+    target: https://bsoyka.me/blog/$1
+bounce.photos:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: custom-email-domain.stripe.com.
+dk1._domainkey.mail:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: dk1._domainkey.anonaddy.me.
+dk2._domainkey.mail:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: dk2._domainkey.anonaddy.me.
+evil:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+      proxied: true
+  type: CNAME
+  value: evil.pages.dev.
+gallery:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: domain.pixieset.com.
+gh:
+  - octodns:
+      cloudflare:
+        auto-ttl: true
+        proxied: true
+    type: CNAME
+    value: bsoyka.me.
+  - type: URLFWD
+    value:
+      code: 301
+      masking: 2
+      path: /*
+      query: 0
+      target: https://github.com/bsoyka/$1
+hello._pka: # PGP key publishing
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: TXT
+  value: v=pka1\;fpr=0CA7CC16A64B68F3048EE8FEA5E726D5A65228EA\;uri=https://bsoyka.me/key.asc
+jcljrmdds7wblxqjzn5kenl324szs62d._domainkey.photos:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: jcljrmdds7wblxqjzn5kenl324szs62d.dkim.custom-email-domain.stripe.com.
+jizbuf4gmk55h3inxhfl2crqb3vlwpe7._domainkey.photos:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: jizbuf4gmk55h3inxhfl2crqb3vlwpe7.dkim.custom-email-domain.stripe.com.
+mail:
+  - octodns:
+      cloudflare:
+        auto-ttl: true
+    type: MX
+    values:
+      - exchange: mail.anonaddy.me.
+        preference: 10
+      - exchange: mail2.anonaddy.me.
+        preference: 20
+  - octodns:
+      cloudflare:
+        auto-ttl: true
+    type: TXT
+    value: v=spf1 include:spf.anonaddy.me -all
+mc:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: A
+  value: 51.81.50.202
+medium:
+  - octodns:
+      cloudflare:
+        auto-ttl: true
+    type: A
+    values:
+      - 162.159.152.4
+      - 162.159.153.4
+  - octodns:
+      cloudflare:
+        auto-ttl: true
+    type: TXT
+    value: pinterest-site-verification=6743ee9d28ca9087c198e888f0554028
+mqtggxlhtf6til3zkdptjawbizsrmofr._domainkey.photos:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: mqtggxlhtf6til3zkdptjawbizsrmofr.dkim.custom-email-domain.stripe.com.
+mysteryegg:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+      proxied: true
+  type: CNAME
+  value: mystery-egg.pages.dev.
+photos:
+  - octodns:
+      cloudflare:
+        auto-ttl: true
+    type: CNAME
+    value: domain.pixieset.com.
+  - ttl: 3600
+    type: TXT
+    value: stripe-verification=e60b9386772407e02c0729f3632f18b4de4c5868ef9e5ba428fa62c6ba8f2d89
+sig1._domainkey:
+  ttl: 3600
+  type: CNAME
+  value: sig1.dkim.bsoyka.me.at.icloudmailadmin.com.
+u75lkntaf5tjxpxi4ly2bh7vnfye472y._domainkey.photos:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: u75lkntaf5tjxpxi4ly2bh7vnfye472y.dkim.custom-email-domain.stripe.com.
+www:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+      proxied: true
+  type: AAAA
+  value: "100::"
