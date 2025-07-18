@@ -13,6 +13,7 @@ providers:
 
 zones:
     "*":
+        lenient: true
         sources:
             - zone_config
         targets:

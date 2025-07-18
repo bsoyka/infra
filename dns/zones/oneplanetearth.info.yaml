@@ -1,8 +1,0 @@
----
-"":
-    octodns:
-        cloudflare:
-            auto-ttl: true
-            proxied: true
-    type: ALIAS
-    value: oneplanetearth.pages.dev.
