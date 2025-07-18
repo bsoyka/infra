@@ -6,17 +6,13 @@ requires-python = ">=3.13"
 name = "bsoyka-infra"
 version = "0.1.0"
 source = { virtual = "." }
-
-[package.dev-dependencies]
-dns = [
+dependencies = [
     { name = "octodns" },
     { name = "octodns-cloudflare" },
 ]
 
 [package.metadata]
-
-[package.metadata.requires-dev]
-dns = [
+requires-dist = [
     { name = "octodns", specifier = ">=1.12.0" },
     { name = "octodns-cloudflare", specifier = ">=1.0.0" },
 ]

@@ -15,12 +15,11 @@ jobs:
       plan: ${{ steps.generate-plan.outputs.plan }}
     steps:
       - uses: actions/checkout@v4
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-python@v5
         with:
-          version: "0.8.0"
-      - name: "Install DNS tooling dependencies"
-        run: uv sync --group dns
+          cache: 'pip'
+      - name: "Install project dependencies"
+        run: pip install -r requirements.txt
       - uses: solvaholic/octodns-sync@v3.1.1
         id: generate-plan
         with:
