@@ -34,6 +34,8 @@ jobs:
     if: ${{ ! contains(needs.octodns-sync.outputs.plan, 'No changes were planned') }}
     needs: [octodns-sync]
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Find previous comment, if present
         uses: peter-evans/find-comment@v3
