@@ -88,6 +88,12 @@ _minecraft._tcp.mc:
     priority: 0
     target: mc.bsoyka.me.
     weight: 0
+aoc-ocr:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: readthedocs.io.
 api:
   octodns:
     cloudflare:
