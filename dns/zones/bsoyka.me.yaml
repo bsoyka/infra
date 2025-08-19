@@ -116,6 +116,13 @@ bounce.photos:
       auto-ttl: true
   type: CNAME
   value: custom-email-domain.stripe.com.
+cal:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+      proxied: true
+  type: CNAME
+  value: bsoyka-calendar.pages.dev.
 dk1._domainkey.mail:
   octodns:
     cloudflare:
