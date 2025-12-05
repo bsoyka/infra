@@ -246,6 +246,12 @@ u75lkntaf5tjxpxi4ly2bh7vnfye472y._domainkey.photos:
       auto-ttl: true
   type: CNAME
   value: u75lkntaf5tjxpxi4ly2bh7vnfye472y.dkim.custom-email-domain.stripe.com.
+wb:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  type: CNAME
+  value: ghs.googlehosted.com.
 www:
   octodns:
     cloudflare:
