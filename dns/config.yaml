@@ -21,6 +21,11 @@ zones:
       - zone_config
     targets:
       - cloudflare
+  "bensoyka.com.":
+    sources:
+      - zone_config
+    targets:
+      - cloudflare
   "bsoyka.me.":
     # photos.bsoyka.me requires both a CNAME and a TXT, which octoDNS doesn't like.
     lenient: true
@@ -35,6 +40,11 @@ zones:
       - cloudflare
   "mountainspalette.com.":
     lenient: true
+    sources:
+      - zone_config
+    targets:
+      - cloudflare
+  "soyka.photos.":
     sources:
       - zone_config
     targets:
