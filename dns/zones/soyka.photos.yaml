@@ -1,0 +1,57 @@
+---
+"":
+  - octodns:
+      cloudflare:
+        auto-ttl: true
+        proxied: true
+    ttl: 300
+    type: A
+    value: 192.0.2.1
+  - octodns:
+      cloudflare:
+        auto-ttl: true
+    ttl: 300
+    type: MX
+    values:
+      - exchange: mx01.mail.icloud.com.
+        preference: 10
+      - exchange: mx02.mail.icloud.com.
+        preference: 10
+  - octodns:
+      cloudflare:
+        auto-ttl: true
+    ttl: 300
+    type: TXT
+    values:
+      - apple-domain=om9s8FplMGIE4jKs
+      - v=spf1 include:icloud.com ~all
+chat:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+      proxied: true
+  ttl: 300
+  type: A
+  value: 192.0.2.1
+gallery:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  ttl: 300
+  type: CNAME
+  value: domain.pixieset.com.
+sig1._domainkey:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+  ttl: 300
+  type: CNAME
+  value: sig1.dkim.soyka.photos.at.icloudmailadmin.com.
+www:
+  octodns:
+    cloudflare:
+      auto-ttl: true
+      proxied: true
+  ttl: 300
+  type: A
+  value: 192.0.2.1

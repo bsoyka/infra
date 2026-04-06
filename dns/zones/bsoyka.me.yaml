@@ -146,8 +146,9 @@ gallery:
   octodns:
     cloudflare:
       auto-ttl: true
-  type: CNAME
-  value: domain.pixieset.com.
+      proxied: true
+  type: A
+  value: 192.0.2.1
 gh:
   - octodns:
       cloudflare:
