@@ -32,6 +32,6 @@ resource "cloudflare_dns_record" "howlonghasthehubbeenunderconstruction_com_apex
   name    = "howlonghasthehubbeenunderconstruction.com"
   type    = "TXT"
   content = each.key
-  ttl     = 3600
+  ttl     = 1
   proxied = false
 }

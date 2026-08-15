@@ -11,23 +11,25 @@
 #
 # TXT values are written bare. Cloudflare treats surrounding quotes as
 # delimiters and strips them, so "v=spf1 -all" and "\"v=spf1 -all\"" serve the
-# identical record -- the escaping was noise. The one exception is the DKIM key
-# for lunarleisure.com, where interior quotes split a value too long for a
-# single DNS character-string; see the note on that entry.
+# identical record -- the escaping was noise.
+#
+# The one case that would need quotes is a value longer than 255 bytes, the DNS
+# limit for a single TXT character-string: interior quotes split it into several.
+# No record here is that long today, but a real (rather than null) DKIM key
+# would be, so keep it in mind before adding one.
 
 locals {
   # SPF. Zones that send no mail carry "v=spf1 -all" to make that explicit.
   spf_records = {
-    "bensoyka.com" = { zone = "bensoyka.com", content = "v=spf1 include:icloud.com ~all", ttl = 3600 }
-    "bsoyka.me"    = { zone = "bsoyka.me", content = "v=spf1 include:icloud.com ~all", ttl = 3600 }
+    "bensoyka.com" = { zone = "bensoyka.com", content = "v=spf1 include:icloud.com ~all", ttl = 1 }
+    "bsoyka.me"    = { zone = "bsoyka.me", content = "v=spf1 include:icloud.com ~all", ttl = 1 }
     "soyka.photos" = { zone = "soyka.photos", content = "v=spf1 include:icloud.com ~all", ttl = 1 }
 
-    "bsoyka.link"                               = { zone = "bsoyka.link", content = "v=spf1 -all", ttl = 3600 }
-    "headshotguy.net"                           = { zone = "headshotguy.net", content = "v=spf1 -all", ttl = 3600 }
-    "howlonghasthehubbeenunderconstruction.com" = { zone = "howlonghasthehubbeenunderconstruction.com", content = "v=spf1 -all", ttl = 3600 }
-    "mountainspalette.com"                      = { zone = "mountainspalette.com", content = "v=spf1 -all", ttl = 3600 }
-
-    "lunarleisure.com" = { zone = "lunarleisure.com", content = "v=spf1 include:_spf.mx.cloudflare.net ~all", ttl = 3600 }
+    "bsoyka.link"                               = { zone = "bsoyka.link", content = "v=spf1 -all", ttl = 1 }
+    "headshotguy.net"                           = { zone = "headshotguy.net", content = "v=spf1 -all", ttl = 1 }
+    "howlonghasthehubbeenunderconstruction.com" = { zone = "howlonghasthehubbeenunderconstruction.com", content = "v=spf1 -all", ttl = 1 }
+    "lunarleisure.com"                          = { zone = "lunarleisure.com", content = "v=spf1 -all", ttl = 1 }
+    "mountainspalette.com"                      = { zone = "mountainspalette.com", content = "v=spf1 -all", ttl = 1 }
 
     # Sending subdomains, each scoped to its own provider.
     "mail.bensoyka.com" = { zone = "bensoyka.com", content = "v=spf1 include:amazonses.com ~all", ttl = 1 }
@@ -43,10 +45,6 @@ locals {
   # Only bensoyka.com reports: its rua address is issued per-zone by Cloudflare
   # DMARC Management and can't be reused, and the other zones were set without
   # reporting rather than each needing its own dashboard step.
-  #
-  # lunarleisure.com is deliberately absent -- it forwards through Cloudflare
-  # Email Routing, where SPF legitimately breaks, so it's left to decide on its
-  # own terms.
   dmarc_records = {
     # Zones that send mail.
     "_dmarc.bensoyka.com"   = { zone = "bensoyka.com", content = "v=DMARC1; p=quarantine; rua=mailto:3967fd5120d64c12b77cf3fa5f9400dc@dmarc-reports.cloudflare.net", ttl = 1 }
@@ -58,6 +56,7 @@ locals {
     "_dmarc.bsoyka.link"                               = { zone = "bsoyka.link", content = "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;", ttl = 1 }
     "_dmarc.headshotguy.net"                           = { zone = "headshotguy.net", content = "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;", ttl = 1 }
     "_dmarc.howlonghasthehubbeenunderconstruction.com" = { zone = "howlonghasthehubbeenunderconstruction.com", content = "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;", ttl = 1 }
+    "_dmarc.lunarleisure.com"                          = { zone = "lunarleisure.com", content = "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;", ttl = 1 }
     "_dmarc.mountainspalette.com"                      = { zone = "mountainspalette.com", content = "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;", ttl = 1 }
   }
 
@@ -84,8 +83,8 @@ locals {
   # directly (Cloudflare Email).
   dkim_records = merge(local.ses_dkim_records, {
     # iCloud Mail
-    "sig1._domainkey.bensoyka.com" = { zone = "bensoyka.com", type = "CNAME", content = "sig1.dkim.bensoyka.com.at.icloudmailadmin.com", ttl = 3600 }
-    "sig1._domainkey.bsoyka.me"    = { zone = "bsoyka.me", type = "CNAME", content = "sig1.dkim.bsoyka.me.at.icloudmailadmin.com", ttl = 3600 }
+    "sig1._domainkey.bensoyka.com" = { zone = "bensoyka.com", type = "CNAME", content = "sig1.dkim.bensoyka.com.at.icloudmailadmin.com", ttl = 1 }
+    "sig1._domainkey.bsoyka.me"    = { zone = "bsoyka.me", type = "CNAME", content = "sig1.dkim.bsoyka.me.at.icloudmailadmin.com", ttl = 1 }
     "sig1._domainkey.soyka.photos" = { zone = "soyka.photos", type = "CNAME", content = "sig1.dkim.soyka.photos.at.icloudmailadmin.com", ttl = 1 }
 
     # AnonAddy
@@ -97,15 +96,8 @@ locals {
     "*._domainkey.bsoyka.link"                               = { zone = "bsoyka.link", type = "TXT", content = "v=DKIM1; p=", ttl = 1 }
     "*._domainkey.headshotguy.net"                           = { zone = "headshotguy.net", type = "TXT", content = "v=DKIM1; p=", ttl = 1 }
     "*._domainkey.howlonghasthehubbeenunderconstruction.com" = { zone = "howlonghasthehubbeenunderconstruction.com", type = "TXT", content = "v=DKIM1; p=", ttl = 1 }
+    "*._domainkey.lunarleisure.com"                          = { zone = "lunarleisure.com", type = "TXT", content = "v=DKIM1; p=", ttl = 1 }
     "*._domainkey.mountainspalette.com"                      = { zone = "mountainspalette.com", type = "TXT", content = "v=DKIM1; p=", ttl = 1 }
-
-    # Cloudflare Email Routing.
-    #
-    # The interior quotes below are load-bearing, unlike anywhere else in this
-    # file. This key is 420 bytes and a DNS TXT character-string caps at 255, so
-    # the quotes split it into a 255-byte and a 165-byte string. Deleting them to
-    # match the surrounding style would break DKIM for this zone.
-    "cf2024-1._domainkey.lunarleisure.com" = { zone = "lunarleisure.com", type = "TXT", content = "\"v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiweykoi+o48IOGuP7GR3X0MOExCUDY/BCRHoWBnh3rChl7WhdyCxW3jgq1daEjPPqoi7sJvdg5hEQVsgVRQP4DcnQDVjGMbASQtrY4WmB1VebF+RPJB2ECPsEDTpeiI5ZyUAwJaVX7r6bznU67g7LvFq35yIo4sdlmtZGV+i0H4cpYH9+3JJ78k\" \"m4KXwaf9xUJCWF6nxeD+qG6Fyruw1Qlbds2r85U9dkNDVAS3gioCvELryh1TxKGiVTkg4wqHTyHfWsp7KD3WQHYJn0RyfJJu6YEmL77zonn7p2SRMvTMP3ZEXibnC9gz3nnhR6wcYL8Q7zXypKTMD58bTixDSJwIDAQAB\"", ttl = 1 }
   })
 }
 

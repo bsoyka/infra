@@ -37,6 +37,6 @@ resource "cloudflare_dns_record" "bsoyka_link_apex_txt" {
   name    = "bsoyka.link"
   type    = "TXT"
   content = each.key
-  ttl     = 3600
+  ttl     = 1
   proxied = false
 }

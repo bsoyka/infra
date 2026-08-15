@@ -50,7 +50,7 @@ resource "cloudflare_dns_record" "headshotguy_net_apex_txt" {
   name    = "headshotguy.net"
   type    = "TXT"
   content = each.key
-  ttl     = 3600
+  ttl     = 1
   proxied = false
 }
 

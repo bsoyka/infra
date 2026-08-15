@@ -29,18 +29,6 @@ resource "cloudflare_dns_record" "lunarleisure_com_apex_cname" {
   proxied = true
 }
 
-resource "cloudflare_dns_record" "lunarleisure_com_apex_mx" {
-  for_each = { "route1.mx.cloudflare.net" = 29, "route2.mx.cloudflare.net" = 76, "route3.mx.cloudflare.net" = 14 }
-
-  zone_id  = local.zone_ids["lunarleisure.com"]
-  name     = "lunarleisure.com"
-  type     = "MX"
-  content  = each.key
-  priority = each.value
-  ttl      = 1
-  proxied  = false
-}
-
 resource "cloudflare_dns_record" "lunarleisure_com_apex_txt" {
   for_each = toset(["google-site-verification=xiksyVWwtCrgy7LmQkEJMl9hTpYiqYaBc-3bm7RiusE"])
 
@@ -48,7 +36,7 @@ resource "cloudflare_dns_record" "lunarleisure_com_apex_txt" {
   name    = "lunarleisure.com"
   type    = "TXT"
   content = each.key
-  ttl     = 3600
+  ttl     = 1
   proxied = false
 }
 

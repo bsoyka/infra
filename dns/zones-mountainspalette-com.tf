@@ -36,7 +36,7 @@ resource "cloudflare_dns_record" "mountainspalette_com_apex_txt" {
   name    = "mountainspalette.com"
   type    = "TXT"
   content = each.key
-  ttl     = 3600
+  ttl     = 1
   proxied = false
 }
 

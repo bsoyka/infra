@@ -34,7 +34,7 @@ resource "cloudflare_dns_record" "bsoyka_me_apex_txt" {
   name    = "bsoyka.me"
   type    = "TXT"
   content = each.key
-  ttl     = 3600
+  ttl     = 1
   proxied = false
 }
 
@@ -48,7 +48,7 @@ resource "cloudflare_dns_record" "bsoyka_me_apex_mx" {
   type     = "MX"
   content  = each.key
   priority = 10
-  ttl      = 3600
+  ttl      = 1
   proxied  = false
 }
 
