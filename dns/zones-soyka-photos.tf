@@ -4,7 +4,7 @@ locals {
   # This zone's slice of the curated zone settings (see locals.tf).
   soyka_photos_settings = {
     "soyka.photos/always_online"            = { zone = "soyka.photos", setting_id = "always_online", value = "off" }
-    "soyka.photos/always_use_https"         = { zone = "soyka.photos", setting_id = "always_use_https", value = "off" }
+    "soyka.photos/always_use_https"         = { zone = "soyka.photos", setting_id = "always_use_https", value = "on" }
     "soyka.photos/automatic_https_rewrites" = { zone = "soyka.photos", setting_id = "automatic_https_rewrites", value = "on" }
     "soyka.photos/brotli"                   = { zone = "soyka.photos", setting_id = "brotli", value = "on" }
     "soyka.photos/browser_check"            = { zone = "soyka.photos", setting_id = "browser_check", value = "on" }
@@ -20,13 +20,25 @@ locals {
   }
 }
 
-resource "cloudflare_dns_record" "soyka_photos_apex_a" {
+# The Pixieset website. Pixieset serves custom domains through Cloudflare for
+# SaaS, so this record must stay DNS-only: proxying a record whose target is
+# Cloudflare's own address space fails with error 1000.
+#
+# Pixieset's dashboard asks for two A records (104.16.185.173, 104.16.186.173),
+# but those are two of the five addresses domain.pixieset.com publishes, and
+# they're Cloudflare anycast IPs rather than Pixieset's own. A CNAME here is
+# flattened at the root by Cloudflare, so it tracks whatever Pixieset publishes
+# instead of pinning a subset that can change out from under us.
+#
+# Do NOT add a CAA record to this zone -- it would block the Let's Encrypt
+# issuance this hostname's certificate depends on.
+resource "cloudflare_dns_record" "soyka_photos_apex_cname" {
   zone_id = local.zone_ids["soyka.photos"]
   name    = "soyka.photos"
-  type    = "A"
-  content = "192.0.2.1"
+  type    = "CNAME"
+  content = "domain.pixieset.com"
   ttl     = 1
-  proxied = true
+  proxied = false
 }
 
 resource "cloudflare_dns_record" "soyka_photos_apex_mx" {
@@ -79,6 +91,8 @@ resource "cloudflare_dns_record" "soyka_photos_sig1_domainkey_cname" {
   proxied = false
 }
 
+# Stays a proxied placeholder: it never serves the site, it only redirects to
+# the apex (see the ruleset below), which requires proxied traffic.
 resource "cloudflare_dns_record" "soyka_photos_www_a" {
   zone_id = local.zone_ids["soyka.photos"]
   name    = "www.soyka.photos"
@@ -112,17 +126,17 @@ resource "cloudflare_ruleset" "soyka_photos_redirects" {
       }
     },
     {
-      ref         = "218f6a841cab46688d7f9eeeeb02dd6b"
-      description = "Redirect to photos.bsoyka.me"
-      expression  = "(http.host eq \"soyka.photos\") or (http.host eq \"www.soyka.photos\")"
+      ref         = "www_to_apex"
+      description = "www.soyka.photos/* -> soyka.photos/*"
+      expression  = "(http.host eq \"www.soyka.photos\")"
       action      = "redirect"
       enabled     = true
       action_parameters = {
         from_value = {
-          status_code           = 302
+          status_code           = 301
           preserve_query_string = true
           target_url = {
-            expression = "concat(\"https://photos.bsoyka.me\", http.request.uri.path)"
+            expression = "concat(\"https://soyka.photos\", http.request.uri.path)"
           }
         }
       }
