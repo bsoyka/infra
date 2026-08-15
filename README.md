@@ -10,3 +10,4 @@ Tool versions are pinned in `mise.toml`.
 | --- | --- |
 | [`dns/`](dns) | Cloudflare zones, DNS records, redirects, and zone settings |
 | [`workers/`](workers) | Cloudflare Workers Custom Domains and KV namespaces |
+| [`tailscale/`](tailscale) | Tailscale ACL policy, DNS, tailnet settings, and device configuration |
