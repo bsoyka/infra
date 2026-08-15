@@ -18,16 +18,6 @@ locals {
     "bsoyka.me/ssl"                      = { zone = "bsoyka.me", setting_id = "ssl", value = "flexible" }
     "bsoyka.me/tls_1_3"                  = { zone = "bsoyka.me", setting_id = "tls_1_3", value = "on" }
   }
-
-  # Stripe custom email domain DKIM keys for photos.bsoyka.me.
-  stripe_dkim_selectors = [
-    "32cgak2j6zrodgxbqmu7bkpydihgtiah",
-    "55ig7coarsaa4kyt672rpplv3xrgnmct",
-    "jcljrmdds7wblxqjzn5kenl324szs62d",
-    "jizbuf4gmk55h3inxhfl2crqb3vlwpe7",
-    "mqtggxlhtf6til3zkdptjawbizsrmofr",
-    "u75lkntaf5tjxpxi4ly2bh7vnfye472y",
-  ]
 }
 
 # ------------ APEX RECORDS ------------
@@ -121,51 +111,13 @@ resource "cloudflare_dns_record" "bsoyka_me_dmarc_mail_txt" {
   proxied = false
 }
 
-# ------------ PHOTOS (Pixieset gallery + Stripe custom email domain) ------------
+# ------------ PHOTOS (Pixieset website) ------------
 
 resource "cloudflare_dns_record" "bsoyka_me_photos_cname" {
   zone_id = local.zone_ids["bsoyka.me"]
   name    = "photos.bsoyka.me"
   type    = "CNAME"
   content = "domain.pixieset.com"
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_me_photos_txt" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "photos.bsoyka.me"
-  type    = "TXT"
-  content = "\"stripe-verification=e60b9386772407e02c0729f3632f18b4de4c5868ef9e5ba428fa62c6ba8f2d89\""
-  ttl     = 3600
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_me_photos_stripe_dkim" {
-  for_each = toset(local.stripe_dkim_selectors)
-
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "${each.key}._domainkey.photos.bsoyka.me"
-  type    = "CNAME"
-  content = "${each.key}.dkim.custom-email-domain.stripe.com"
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_me_dmarc_photos_txt" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "_dmarc.photos.bsoyka.me"
-  type    = "TXT"
-  content = "v=DMARC1; p=none"
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_me_bounce_photos_cname" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "bounce.photos.bsoyka.me"
-  type    = "CNAME"
-  content = "custom-email-domain.stripe.com"
   ttl     = 1
   proxied = false
 }
