@@ -351,7 +351,7 @@ resource "cloudflare_ruleset" "bsoyka_me_redirects" {
       enabled     = true
       action_parameters = {
         from_value = {
-          status_code           = 302
+          status_code           = 301
           preserve_query_string = true
           target_url = {
             expression = "concat(\"https://www.soyka.photos\", http.request.uri.path)"
