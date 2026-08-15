@@ -9,3 +9,4 @@ Tool versions are pinned in `mise.toml`.
 | Directory | Contents |
 | --- | --- |
 | [`dns/`](dns) | Cloudflare zones, DNS records, redirects, and zone settings |
+| [`workers/`](workers) | Cloudflare Workers Custom Domains and KV namespaces |

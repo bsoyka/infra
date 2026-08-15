@@ -57,3 +57,7 @@ There is no CI pipeline yet — plans and applies run locally.
   value Cloudflare already returns.
 - Proxied records must use `ttl = 1`, which Cloudflare treats as "automatic." `ttl` is a required
   field, so this can't be omitted even where it's the default.
+- Some zones' apexes carry an `AAAA "100::"` record that Cloudflare manages automatically as a
+  side effect of a Workers Custom Domain binding. Those aren't modeled here — see
+  [`workers/`](../workers) instead. Modeling one as a plain `cloudflare_dns_record` doesn't work:
+  the record is read-only, and any attempt to change or delete it fails with API error `1043`.

@@ -20,11 +20,7 @@ locals {
   }
 }
 
-resource "cloudflare_dns_record" "hub_construction_apex_aaaa" {
-  zone_id = local.zone_ids["howlonghasthehubbeenunderconstruction.com"]
-  name    = "howlonghasthehubbeenunderconstruction.com"
-  type    = "AAAA"
-  content = "100::"
-  ttl     = 1
-  proxied = true
-}
+# This zone has no plain DNS records of its own. Its apex carries an "100::"
+# AAAA placeholder that Cloudflare manages automatically as a side effect of
+# the `hub-construction` Worker's Custom Domain binding -- see
+# workers/workers-hub-construction.tf.
