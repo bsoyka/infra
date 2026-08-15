@@ -55,7 +55,7 @@ resource "cloudflare_dns_record" "soyka_photos_apex_mx" {
 }
 
 resource "cloudflare_dns_record" "soyka_photos_apex_txt" {
-  for_each = toset(["\"apple-domain=om9s8FplMGIE4jKs\"", "\"v=spf1 include:icloud.com ~all\""])
+  for_each = toset(["\"apple-domain=om9s8FplMGIE4jKs\"", "\"v=spf1 include:icloud.com ~all\"", "google-site-verification=nONQnbI9XM2lkVwYx1a1D4ZII8ZjYxUXsN8Lu88WlcI"])
 
   zone_id = local.zone_ids["soyka.photos"]
   name    = "soyka.photos"
