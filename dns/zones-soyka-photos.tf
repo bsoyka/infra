@@ -20,23 +20,24 @@ locals {
   }
 }
 
-# The Pixieset website. Pixieset serves custom domains through Cloudflare for
-# SaaS, so this record must stay DNS-only: proxying a record whose target is
-# Cloudflare's own address space fails with error 1000.
+# The Pixieset website, apex half. These are the exact two A records Pixieset's
+# dashboard specifies for a root domain. They are Cloudflare anycast addresses
+# (Pixieset serves custom domains through Cloudflare for SaaS), and they are two
+# of the five that domain.pixieset.com currently publishes -- so if Pixieset's
+# set ever changes, this pins a subset and the site can break without warning.
 #
-# Pixieset's dashboard asks for two A records (104.16.185.173, 104.16.186.173),
-# but those are two of the five addresses domain.pixieset.com publishes, and
-# they're Cloudflare anycast IPs rather than Pixieset's own. A CNAME here is
-# flattened at the root by Cloudflare, so it tracks whatever Pixieset publishes
-# instead of pinning a subset that can change out from under us.
+# Must stay DNS-only: proxying a record whose target is Cloudflare's own address
+# space fails with error 1000.
 #
 # Do NOT add a CAA record to this zone -- it would block the Let's Encrypt
-# issuance this hostname's certificate depends on.
-resource "cloudflare_dns_record" "soyka_photos_apex_cname" {
+# issuance the certificate for this hostname depends on.
+resource "cloudflare_dns_record" "soyka_photos_apex_a" {
+  for_each = toset(["104.16.185.173", "104.16.186.173"])
+
   zone_id = local.zone_ids["soyka.photos"]
   name    = "soyka.photos"
-  type    = "CNAME"
-  content = "domain.pixieset.com"
+  type    = "A"
+  content = each.key
   ttl     = 1
   proxied = false
 }
@@ -91,15 +92,19 @@ resource "cloudflare_dns_record" "soyka_photos_sig1_domainkey_cname" {
   proxied = false
 }
 
-# Stays a proxied placeholder: it never serves the site, it only redirects to
-# the apex (see the ruleset below), which requires proxied traffic.
-resource "cloudflare_dns_record" "soyka_photos_www_a" {
+# The Pixieset website. Must stay DNS-only so Cloudflare for SaaS can follow
+# the CNAME and route the hostname to Pixieset, and so Pixieset can issue the
+# certificate for it -- the same arrangement as the gallery record above.
+#
+# Do NOT add a CAA record to this zone: it would block the Let's Encrypt
+# issuance this certificate depends on.
+resource "cloudflare_dns_record" "soyka_photos_www_cname" {
   zone_id = local.zone_ids["soyka.photos"]
   name    = "www.soyka.photos"
-  type    = "A"
-  content = "192.0.2.1"
+  type    = "CNAME"
+  content = "domain.pixieset.com"
   ttl     = 1
-  proxied = true
+  proxied = false
 }
 
 resource "cloudflare_ruleset" "soyka_photos_redirects" {
@@ -121,22 +126,6 @@ resource "cloudflare_ruleset" "soyka_photos_redirects" {
           preserve_query_string = true
           target_url = {
             value = "https://cal.com/bsoyka/photography"
-          }
-        }
-      }
-    },
-    {
-      ref         = "www_to_apex"
-      description = "www.soyka.photos/* -> soyka.photos/*"
-      expression  = "(http.host eq \"www.soyka.photos\")"
-      action      = "redirect"
-      enabled     = true
-      action_parameters = {
-        from_value = {
-          status_code           = 301
-          preserve_query_string = true
-          target_url = {
-            expression = "concat(\"https://soyka.photos\", http.request.uri.path)"
           }
         }
       }
