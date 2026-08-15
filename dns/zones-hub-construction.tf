@@ -26,7 +26,7 @@ locals {
 # workers/workers-hub-construction.tf.
 
 resource "cloudflare_dns_record" "howlonghasthehubbeenunderconstruction_com_apex_txt" {
-  for_each = toset(["google-site-verification=ZPlmfpuzZOCGCaFrFS7RH8WoKHtEMF1P0eke6-wWOfM", "\"v=spf1 -all\""])
+  for_each = toset(["google-site-verification=ZPlmfpuzZOCGCaFrFS7RH8WoKHtEMF1P0eke6-wWOfM"])
 
   zone_id = local.zone_ids["howlonghasthehubbeenunderconstruction.com"]
   name    = "howlonghasthehubbeenunderconstruction.com"

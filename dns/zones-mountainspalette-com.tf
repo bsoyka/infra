@@ -30,7 +30,7 @@ resource "cloudflare_dns_record" "mountainspalette_com_apex_cname" {
 }
 
 resource "cloudflare_dns_record" "mountainspalette_com_apex_txt" {
-  for_each = toset(["google-site-verification=OAxrovU5yCz-DMgmCKbYHFduMX0ezxSOaB6vzq-GgVs", "facebook-domain-verification=9nbdlha3abztb8yao15cudk9woscd0", "\"v=spf1 -all\""])
+  for_each = toset(["google-site-verification=OAxrovU5yCz-DMgmCKbYHFduMX0ezxSOaB6vzq-GgVs", "facebook-domain-verification=9nbdlha3abztb8yao15cudk9woscd0"])
 
   zone_id = local.zone_ids["mountainspalette.com"]
   name    = "mountainspalette.com"

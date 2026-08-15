@@ -18,13 +18,6 @@ locals {
     "bensoyka.com/ssl"                      = { zone = "bensoyka.com", setting_id = "ssl", value = "full" }
     "bensoyka.com/tls_1_3"                  = { zone = "bensoyka.com", setting_id = "tls_1_3", value = "on" }
   }
-
-  # Amazon SES DKIM keys.
-  ses_dkim_selectors = [
-    "bntozggc32fnqppxzjdgucm3uovji2v7",
-    "jvs36w4jzarwc2l4qxcbepexcsshtkvk",
-    "k74wsifysejy46o3w757f7tpb72qtmtt",
-  ]
 }
 
 # ------------ APEX RECORDS ------------
@@ -35,7 +28,7 @@ locals {
 # see workers/workers-website.tf.
 
 resource "cloudflare_dns_record" "bensoyka_com_apex_txt" {
-  for_each = toset(["\"apple-domain=CLN3hTkjJIb9wrXk\"", "\"google-site-verification=3ZcREVrGG9LkdcrAl3h8FxnCJ0IYmg4Ysay8gmUVidQ\"", "\"v=spf1 include:icloud.com ~all\""])
+  for_each = toset(["\"apple-domain=CLN3hTkjJIb9wrXk\"", "\"google-site-verification=3ZcREVrGG9LkdcrAl3h8FxnCJ0IYmg4Ysay8gmUVidQ\""])
 
   zone_id = local.zone_ids["bensoyka.com"]
   name    = "bensoyka.com"
@@ -57,24 +50,6 @@ resource "cloudflare_dns_record" "bensoyka_com_apex_mx" {
   priority = 10
   ttl      = 3600
   proxied  = false
-}
-
-resource "cloudflare_dns_record" "bensoyka_com_dmarc_txt" {
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "_dmarc.bensoyka.com"
-  type    = "TXT"
-  content = "\"v=DMARC1; p=none; rua=mailto:3967fd5120d64c12b77cf3fa5f9400dc@dmarc-reports.cloudflare.net\""
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bensoyka_com_sig1_domainkey_cname" {
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "sig1._domainkey.bensoyka.com"
-  type    = "CNAME"
-  content = "sig1.dkim.bensoyka.com.at.icloudmailadmin.com"
-  ttl     = 3600
-  proxied = false
 }
 
 # ------------ AWS INCOMING MAIL ------------
@@ -99,26 +74,6 @@ resource "cloudflare_dns_record" "bensoyka_com_mail_mx" {
   priority = 10
   ttl      = 1
   proxied  = false
-}
-
-resource "cloudflare_dns_record" "bensoyka_com_mail_txt" {
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "mail.bensoyka.com"
-  type    = "TXT"
-  content = "\"v=spf1 include:amazonses.com ~all\""
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bensoyka_com_ses_dkim" {
-  for_each = toset(local.ses_dkim_selectors)
-
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "${each.key}._domainkey.bensoyka.com"
-  type    = "CNAME"
-  content = "${each.key}.dkim.amazonses.com"
-  ttl     = 1
-  proxied = false
 }
 
 # ------------ PROJECT SUBDOMAINS ------------

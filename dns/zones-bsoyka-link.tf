@@ -31,30 +31,12 @@ resource "cloudflare_dns_record" "bsoyka_link_apex_a" {
 }
 
 resource "cloudflare_dns_record" "bsoyka_link_apex_txt" {
-  for_each = toset(["google-site-verification=NGEVnPDMIZA1Nkw1hMIp0i78s6vy1araVCMmClhkAsw", "\"v=spf1 -all\""])
+  for_each = toset(["google-site-verification=NGEVnPDMIZA1Nkw1hMIp0i78s6vy1araVCMmClhkAsw"])
 
   zone_id = local.zone_ids["bsoyka.link"]
   name    = "bsoyka.link"
   type    = "TXT"
   content = each.key
   ttl     = 3600
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_link_dmarc_txt" {
-  zone_id = local.zone_ids["bsoyka.link"]
-  name    = "_dmarc.bsoyka.link"
-  type    = "TXT"
-  content = "\"v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;\""
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_link_wildcard_domainkey_txt" {
-  zone_id = local.zone_ids["bsoyka.link"]
-  name    = "*._domainkey.bsoyka.link"
-  type    = "TXT"
-  content = "\"v=DKIM1; p=\""
-  ttl     = 1
   proxied = false
 }

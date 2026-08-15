@@ -55,7 +55,7 @@ resource "cloudflare_dns_record" "soyka_photos_apex_mx" {
 }
 
 resource "cloudflare_dns_record" "soyka_photos_apex_txt" {
-  for_each = toset(["\"apple-domain=om9s8FplMGIE4jKs\"", "\"v=spf1 include:icloud.com ~all\"", "google-site-verification=nONQnbI9XM2lkVwYx1a1D4ZII8ZjYxUXsN8Lu88WlcI"])
+  for_each = toset(["\"apple-domain=om9s8FplMGIE4jKs\"", "google-site-verification=nONQnbI9XM2lkVwYx1a1D4ZII8ZjYxUXsN8Lu88WlcI"])
 
   zone_id = local.zone_ids["soyka.photos"]
   name    = "soyka.photos"
@@ -79,15 +79,6 @@ resource "cloudflare_dns_record" "soyka_photos_gallery_cname" {
   name    = "gallery.soyka.photos"
   type    = "CNAME"
   content = "domain.pixieset.com"
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "soyka_photos_sig1_domainkey_cname" {
-  zone_id = local.zone_ids["soyka.photos"]
-  name    = "sig1._domainkey.soyka.photos"
-  type    = "CNAME"
-  content = "sig1.dkim.soyka.photos.at.icloudmailadmin.com"
   ttl     = 1
   proxied = false
 }

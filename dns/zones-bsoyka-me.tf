@@ -28,7 +28,7 @@ locals {
 # workers/workers-website.tf.
 
 resource "cloudflare_dns_record" "bsoyka_me_apex_txt" {
-  for_each = toset(["\"MS=ms91612553\"", "\"abuseipdb-verification=fBJQRaKN\"", "\"apple-domain=95jSfw1eSMgiCbnX\"", "\"apple-domain=GlJq0rCqk0wARSgv\"", "\"apple-domain=Mmk69XPD4Sj7l2cn\"", "\"google-site-verification=div3eS2o7A0sZgTmGk_CrQ8ZzbxvhWhcXWb-1l1iT7U\"", "\"keybase-site-verification=8mkbKsdi1n4xnqWPXlqea0nQ3r29ltiNcSn1_TugKvU\"", "\"pinterest-site-verification=6743ee9d28ca9087c198e888f0554028\"", "\"v=spf1 include:icloud.com ~all\""])
+  for_each = toset(["\"MS=ms91612553\"", "\"abuseipdb-verification=fBJQRaKN\"", "\"apple-domain=95jSfw1eSMgiCbnX\"", "\"apple-domain=GlJq0rCqk0wARSgv\"", "\"apple-domain=Mmk69XPD4Sj7l2cn\"", "\"google-site-verification=div3eS2o7A0sZgTmGk_CrQ8ZzbxvhWhcXWb-1l1iT7U\"", "\"keybase-site-verification=8mkbKsdi1n4xnqWPXlqea0nQ3r29ltiNcSn1_TugKvU\"", "\"pinterest-site-verification=6743ee9d28ca9087c198e888f0554028\""])
 
   zone_id = local.zone_ids["bsoyka.me"]
   name    = "bsoyka.me"
@@ -52,15 +52,6 @@ resource "cloudflare_dns_record" "bsoyka_me_apex_mx" {
   proxied  = false
 }
 
-resource "cloudflare_dns_record" "bsoyka_me_sig1_domainkey_cname" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "sig1._domainkey.bsoyka.me"
-  type    = "CNAME"
-  content = "sig1.dkim.bsoyka.me.at.icloudmailadmin.com"
-  ttl     = 3600
-  proxied = false
-}
-
 # ------------ ANONADDY MAIL ------------
 
 resource "cloudflare_dns_record" "bsoyka_me_mail_mx" {
@@ -73,42 +64,6 @@ resource "cloudflare_dns_record" "bsoyka_me_mail_mx" {
   priority = each.value
   ttl      = 1
   proxied  = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_me_mail_txt" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "mail.bsoyka.me"
-  type    = "TXT"
-  content = "\"v=spf1 include:spf.anonaddy.me -all\""
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_me_dk1_domainkey_mail_cname" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "dk1._domainkey.mail.bsoyka.me"
-  type    = "CNAME"
-  content = "dk1._domainkey.anonaddy.me"
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_me_dk2_domainkey_mail_cname" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "dk2._domainkey.mail.bsoyka.me"
-  type    = "CNAME"
-  content = "dk2._domainkey.anonaddy.me"
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_me_dmarc_mail_txt" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "_dmarc.mail.bsoyka.me"
-  type    = "TXT"
-  content = "\"v=DMARC1; p=quarantine; adkim=s\""
-  ttl     = 1
-  proxied = false
 }
 
 # ------------ PHOTOS ------------

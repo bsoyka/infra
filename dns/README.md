@@ -13,10 +13,18 @@ This directory is a [Terraform](https://developer.hashicorp.com/terraform) root 
 | `locals.tf` | Account ID, the zone ID map, and the merged zone-settings map |
 | `zones.tf` | `cloudflare_zone` for each zone |
 | `zone-settings.tf` | The `cloudflare_zone_setting` resource that applies `local.zone_settings` |
+| `email-auth.tf` | SPF, DMARC, and DKIM records for every zone |
 | `zones-*.tf` | One file per zone: its DNS records, its slice of zone settings (as a `locals` block), and its redirect ruleset, if any |
 
-Everything specific to a single zone lives in that zone's `zones-*.tf` file. The other files are
-shared mechanism — they don't hold per-zone data themselves.
+Everything specific to a single zone lives in that zone's `zones-*.tf` file, with one deliberate
+exception: `email-auth.tf`. SPF, DMARC, and DKIM are the one class of record that has to be
+reasoned about as a set — the same policy usually applies across several zones, and changing one
+usually means changing the others — so they're kept together where they can be compared at a
+glance. Everything else in the list is shared mechanism and holds no per-zone data.
+
+Records there are keyed by the fully-qualified name that carries them, so a hostname can be found
+by searching for it directly. Mail routing (`MX`) is not email authentication and stays with its
+zone.
 
 ## Prerequisites
 
