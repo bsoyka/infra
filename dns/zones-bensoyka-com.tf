@@ -18,10 +18,7 @@ locals {
     "bensoyka.com/ssl"                      = { zone = "bensoyka.com", setting_id = "ssl", value = "full" }
     "bensoyka.com/tls_1_3"                  = { zone = "bensoyka.com", setting_id = "tls_1_3", value = "on" }
   }
-}
 
-
-locals {
   # Amazon SES DKIM keys.
   ses_dkim_selectors = [
     "bntozggc32fnqppxzjdgucm3uovji2v7",
@@ -29,23 +26,8 @@ locals {
     "k74wsifysejy46o3w757f7tpb72qtmtt",
   ]
 }
-resource "cloudflare_dns_record" "bensoyka_com_773c13740086417b248ad3bcd388ad48_statistician_cname" {
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "_773c13740086417b248ad3bcd388ad48.statistician.bensoyka.com"
-  type    = "CNAME"
-  content = "_0e06ae0f71f39193689a1eb3f5dca887.jkddzztszm.acm-validations.aws"
-  ttl     = 1
-  proxied = false
-}
 
-resource "cloudflare_dns_record" "bensoyka_com_a4f4c37292f260b0e602bb62b0f4c3a7_gatekeeper_cname" {
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "_a4f4c37292f260b0e602bb62b0f4c3a7.gatekeeper.bensoyka.com"
-  type    = "CNAME"
-  content = "_d55cb084945b4096c0d497cd67fad445.jkddzztszm.acm-validations.aws"
-  ttl     = 1
-  proxied = false
-}
+# ------------ APEX RECORDS ------------
 
 resource "cloudflare_dns_record" "bensoyka_com_apex_aaaa" {
   zone_id = local.zone_ids["bensoyka.com"]
@@ -56,16 +38,13 @@ resource "cloudflare_dns_record" "bensoyka_com_apex_aaaa" {
   proxied = true
 }
 
-resource "cloudflare_dns_record" "bensoyka_com_apex_mx" {
-  for_each = toset(["mx01.mail.icloud.com", "mx02.mail.icloud.com"])
-
-  zone_id  = local.zone_ids["bensoyka.com"]
-  name     = "bensoyka.com"
-  type     = "MX"
-  content  = each.key
-  priority = 10
-  ttl      = 3600
-  proxied  = false
+resource "cloudflare_dns_record" "bensoyka_com_www_aaaa" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "www.bensoyka.com"
+  type    = "AAAA"
+  content = "100::"
+  ttl     = 1
+  proxied = true
 }
 
 resource "cloudflare_dns_record" "bensoyka_com_apex_txt" {
@@ -79,13 +58,18 @@ resource "cloudflare_dns_record" "bensoyka_com_apex_txt" {
   proxied = false
 }
 
-resource "cloudflare_dns_record" "bensoyka_com_cal_cname" {
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "cal.bensoyka.com"
-  type    = "CNAME"
-  content = "bsoyka-calendar.pages.dev"
-  ttl     = 1
-  proxied = true
+# ------------ ICLOUD MAIL ------------
+
+resource "cloudflare_dns_record" "bensoyka_com_apex_mx" {
+  for_each = toset(["mx01.mail.icloud.com", "mx02.mail.icloud.com"])
+
+  zone_id  = local.zone_ids["bensoyka.com"]
+  name     = "bensoyka.com"
+  type     = "MX"
+  content  = each.key
+  priority = 10
+  ttl      = 3600
+  proxied  = false
 }
 
 resource "cloudflare_dns_record" "bensoyka_com_dmarc_txt" {
@@ -97,14 +81,16 @@ resource "cloudflare_dns_record" "bensoyka_com_dmarc_txt" {
   proxied = false
 }
 
-resource "cloudflare_dns_record" "bensoyka_com_gatekeeper_cname" {
+resource "cloudflare_dns_record" "bensoyka_com_sig1_domainkey_cname" {
   zone_id = local.zone_ids["bensoyka.com"]
-  name    = "gatekeeper.bensoyka.com"
+  name    = "sig1._domainkey.bensoyka.com"
   type    = "CNAME"
-  content = "di962er6x6fr3.cloudfront.net"
-  ttl     = 1
+  content = "sig1.dkim.bensoyka.com.at.icloudmailadmin.com"
+  ttl     = 3600
   proxied = false
 }
+
+# ------------ AWS INCOMING MAIL ------------
 
 resource "cloudflare_dns_record" "bensoyka_com_in_mx" {
   zone_id  = local.zone_ids["bensoyka.com"]
@@ -115,6 +101,8 @@ resource "cloudflare_dns_record" "bensoyka_com_in_mx" {
   ttl      = 1
   proxied  = false
 }
+
+# ------------ AWS OUTGOING MAIL ------------
 
 resource "cloudflare_dns_record" "bensoyka_com_mail_mx" {
   zone_id  = local.zone_ids["bensoyka.com"]
@@ -135,15 +123,6 @@ resource "cloudflare_dns_record" "bensoyka_com_mail_txt" {
   proxied = false
 }
 
-resource "cloudflare_dns_record" "bensoyka_com_minnehack_aaaa" {
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "minnehack.bensoyka.com"
-  type    = "AAAA"
-  content = "100::"
-  ttl     = 1
-  proxied = true
-}
-
 resource "cloudflare_dns_record" "bensoyka_com_ses_dkim" {
   for_each = toset(local.ses_dkim_selectors)
 
@@ -155,14 +134,40 @@ resource "cloudflare_dns_record" "bensoyka_com_ses_dkim" {
   proxied = false
 }
 
-resource "cloudflare_dns_record" "bensoyka_com_sig1_domainkey_cname" {
+# ------------ PROJECT SUBDOMAINS ------------
+
+# Calendar
+
+resource "cloudflare_dns_record" "bensoyka_com_cal_cname" {
   zone_id = local.zone_ids["bensoyka.com"]
-  name    = "sig1._domainkey.bensoyka.com"
+  name    = "cal.bensoyka.com"
   type    = "CNAME"
-  content = "sig1.dkim.bensoyka.com.at.icloudmailadmin.com"
-  ttl     = 3600
+  content = "bsoyka-calendar.pages.dev"
+  ttl     = 1
+  proxied = true
+}
+
+# Gatekeeper
+
+resource "cloudflare_dns_record" "bensoyka_com_gatekeeper_cname" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "gatekeeper.bensoyka.com"
+  type    = "CNAME"
+  content = "di962er6x6fr3.cloudfront.net"
+  ttl     = 1
   proxied = false
 }
+
+resource "cloudflare_dns_record" "bensoyka_com_a4f4c37292f260b0e602bb62b0f4c3a7_gatekeeper_cname" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "_a4f4c37292f260b0e602bb62b0f4c3a7.gatekeeper.bensoyka.com"
+  type    = "CNAME"
+  content = "_d55cb084945b4096c0d497cd67fad445.jkddzztszm.acm-validations.aws"
+  ttl     = 1
+  proxied = false
+}
+
+# Statistician
 
 resource "cloudflare_dns_record" "bensoyka_com_statistician_cname" {
   zone_id = local.zone_ids["bensoyka.com"]
@@ -173,11 +178,11 @@ resource "cloudflare_dns_record" "bensoyka_com_statistician_cname" {
   proxied = false
 }
 
-resource "cloudflare_dns_record" "bensoyka_com_www_aaaa" {
+resource "cloudflare_dns_record" "bensoyka_com_773c13740086417b248ad3bcd388ad48_statistician_cname" {
   zone_id = local.zone_ids["bensoyka.com"]
-  name    = "www.bensoyka.com"
-  type    = "AAAA"
-  content = "100::"
+  name    = "_773c13740086417b248ad3bcd388ad48.statistician.bensoyka.com"
+  type    = "CNAME"
+  content = "_0e06ae0f71f39193689a1eb3f5dca887.jkddzztszm.acm-validations.aws"
   ttl     = 1
-  proxied = true
+  proxied = false
 }
