@@ -28,14 +28,31 @@ locals {
     "mail.bsoyka.me"    = { zone = "bsoyka.me", content = "\"v=spf1 include:spf.anonaddy.me -all\"", ttl = 1 }
   }
 
-  # DMARC. Note the gaps: bsoyka.me, soyka.photos, headshotguy.net,
-  # lunarleisure.com, mountainspalette.com and the hub zone have no policy at
-  # all, and bsoyka.me's only record covers the mail subdomain rather than the
-  # apex, so nothing is inherited.
+  # DMARC. Zones that carry live mail sit at p=quarantine with relaxed
+  # alignment (the spec default), so a subdomain sender that hasn't been
+  # accounted for fails soft rather than disappearing. Zones that send nothing
+  # use p=reject with strict alignment -- there is no legitimate mail to lose,
+  # and the strict pairing is what makes "v=spf1 -all" actually enforceable.
+  #
+  # Only bensoyka.com reports: its rua address is issued per-zone by Cloudflare
+  # DMARC Management and can't be reused, and the other zones were set without
+  # reporting rather than each needing its own dashboard step.
+  #
+  # lunarleisure.com is deliberately absent -- it forwards through Cloudflare
+  # Email Routing, where SPF legitimately breaks, so it's left to decide on its
+  # own terms.
   dmarc_records = {
-    "_dmarc.bensoyka.com"   = { zone = "bensoyka.com", content = "\"v=DMARC1; p=none; rua=mailto:3967fd5120d64c12b77cf3fa5f9400dc@dmarc-reports.cloudflare.net\"", ttl = 1 }
-    "_dmarc.bsoyka.link"    = { zone = "bsoyka.link", content = "\"v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;\"", ttl = 1 }
+    # Zones that send mail.
+    "_dmarc.bensoyka.com"   = { zone = "bensoyka.com", content = "\"v=DMARC1; p=quarantine; rua=mailto:3967fd5120d64c12b77cf3fa5f9400dc@dmarc-reports.cloudflare.net\"", ttl = 1 }
+    "_dmarc.bsoyka.me"      = { zone = "bsoyka.me", content = "\"v=DMARC1; p=quarantine\"", ttl = 1 }
+    "_dmarc.soyka.photos"   = { zone = "soyka.photos", content = "\"v=DMARC1; p=quarantine\"", ttl = 1 }
     "_dmarc.mail.bsoyka.me" = { zone = "bsoyka.me", content = "\"v=DMARC1; p=quarantine; adkim=s\"", ttl = 1 }
+
+    # Zones that send nothing.
+    "_dmarc.bsoyka.link"                               = { zone = "bsoyka.link", content = "\"v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;\"", ttl = 1 }
+    "_dmarc.headshotguy.net"                           = { zone = "headshotguy.net", content = "\"v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;\"", ttl = 1 }
+    "_dmarc.howlonghasthehubbeenunderconstruction.com" = { zone = "howlonghasthehubbeenunderconstruction.com", content = "\"v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;\"", ttl = 1 }
+    "_dmarc.mountainspalette.com"                      = { zone = "mountainspalette.com", content = "\"v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;\"", ttl = 1 }
   }
 
   # Amazon SES rotates these as a set; they are generated into dkim_records
@@ -69,8 +86,12 @@ locals {
     "dk1._domainkey.mail.bsoyka.me" = { zone = "bsoyka.me", type = "CNAME", content = "dk1._domainkey.anonaddy.me", ttl = 1 }
     "dk2._domainkey.mail.bsoyka.me" = { zone = "bsoyka.me", type = "CNAME", content = "dk2._domainkey.anonaddy.me", ttl = 1 }
 
-    # A null DKIM key, asserting that nothing legitimately signs for this zone.
-    "*._domainkey.bsoyka.link" = { zone = "bsoyka.link", type = "TXT", content = "\"v=DKIM1; p=\"", ttl = 1 }
+    # Null DKIM keys: an empty p= asserts that no key can validly sign for these
+    # zones, which is what completes the p=reject posture above.
+    "*._domainkey.bsoyka.link"                               = { zone = "bsoyka.link", type = "TXT", content = "\"v=DKIM1; p=\"", ttl = 1 }
+    "*._domainkey.headshotguy.net"                           = { zone = "headshotguy.net", type = "TXT", content = "\"v=DKIM1; p=\"", ttl = 1 }
+    "*._domainkey.howlonghasthehubbeenunderconstruction.com" = { zone = "howlonghasthehubbeenunderconstruction.com", type = "TXT", content = "\"v=DKIM1; p=\"", ttl = 1 }
+    "*._domainkey.mountainspalette.com"                      = { zone = "mountainspalette.com", type = "TXT", content = "\"v=DKIM1; p=\"", ttl = 1 }
 
     # Cloudflare Email Routing
     "cf2024-1._domainkey.lunarleisure.com" = { zone = "lunarleisure.com", type = "TXT", content = "\"v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiweykoi+o48IOGuP7GR3X0MOExCUDY/BCRHoWBnh3rChl7WhdyCxW3jgq1daEjPPqoi7sJvdg5hEQVsgVRQP4DcnQDVjGMbASQtrY4WmB1VebF+RPJB2ECPsEDTpeiI5ZyUAwJaVX7r6bznU67g7LvFq35yIo4sdlmtZGV+i0H4cpYH9+3JJ78k\" \"m4KXwaf9xUJCWF6nxeD+qG6Fyruw1Qlbds2r85U9dkNDVAS3gioCvELryh1TxKGiVTkg4wqHTyHfWsp7KD3WQHYJn0RyfJJu6YEmL77zonn7p2SRMvTMP3ZEXibnC9gz3nnhR6wcYL8Q7zXypKTMD58bTixDSJwIDAQAB\"", ttl = 1 }
