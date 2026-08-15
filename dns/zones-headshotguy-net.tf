@@ -20,20 +20,25 @@ locals {
   }
 }
 
-resource "cloudflare_dns_record" "headshotguy_net_apex_cname" {
+# Redirect-only placeholders. The ruleset below catches the whole zone, so
+# nothing is ever fetched from these addresses -- they exist only to be proxied,
+# which is what lets the redirect rule run. 192.0.2.1 is TEST-NET-1 (RFC 5737),
+# the same placeholder used for the other redirect-only hostnames in this repo.
+
+resource "cloudflare_dns_record" "headshotguy_net_apex_a" {
   zone_id = local.zone_ids["headshotguy.net"]
   name    = "headshotguy.net"
-  type    = "CNAME"
-  content = "bsoyka.pixieset.com"
+  type    = "A"
+  content = "192.0.2.1"
   ttl     = 1
   proxied = true
 }
 
-resource "cloudflare_dns_record" "headshotguy_net_www_cname" {
+resource "cloudflare_dns_record" "headshotguy_net_www_a" {
   zone_id = local.zone_ids["headshotguy.net"]
   name    = "www.headshotguy.net"
-  type    = "CNAME"
-  content = "bsoyka.pixieset.com"
+  type    = "A"
+  content = "192.0.2.1"
   ttl     = 1
   proxied = true
 }
