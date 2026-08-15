@@ -28,24 +28,13 @@ locals {
 }
 
 # ------------ APEX RECORDS ------------
-
-resource "cloudflare_dns_record" "bensoyka_com_apex_aaaa" {
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "bensoyka.com"
-  type    = "AAAA"
-  content = "100::"
-  ttl     = 1
-  proxied = true
-}
-
-resource "cloudflare_dns_record" "bensoyka_com_www_aaaa" {
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "www.bensoyka.com"
-  type    = "AAAA"
-  content = "100::"
-  ttl     = 1
-  proxied = true
-}
+#
+# bensoyka.com and www.bensoyka.com also carry an "100::" AAAA placeholder
+# that Cloudflare manages automatically as a side effect of the `website`
+# Worker's Custom Domain binding. That's not a DNS record to manage here --
+# see workers/workers-website.tf. (minnehack.bensoyka.com had the same kind
+# of placeholder for the `minnehack-2026` Worker; it's in
+# workers/workers-minnehack-2026.tf instead.)
 
 resource "cloudflare_dns_record" "bensoyka_com_apex_txt" {
   for_each = toset(["\"apple-domain=CLN3hTkjJIb9wrXk\"", "\"google-site-verification=3ZcREVrGG9LkdcrAl3h8FxnCJ0IYmg4Ysay8gmUVidQ\"", "\"v=spf1 include:icloud.com ~all\""])
