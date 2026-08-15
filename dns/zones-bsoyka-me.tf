@@ -111,15 +111,19 @@ resource "cloudflare_dns_record" "bsoyka_me_dmarc_mail_txt" {
   proxied = false
 }
 
-# ------------ PHOTOS (Pixieset website) ------------
+# ------------ PHOTOS ------------
+#
+# Photos redirect (-> www.soyka.photos, see the redirect ruleset below). Points
+# at a proxied placeholder because dynamic redirects only run on proxied
+# traffic; the address itself is never reached.
 
-resource "cloudflare_dns_record" "bsoyka_me_photos_cname" {
+resource "cloudflare_dns_record" "bsoyka_me_photos_a" {
   zone_id = local.zone_ids["bsoyka.me"]
   name    = "photos.bsoyka.me"
-  type    = "CNAME"
-  content = "domain.pixieset.com"
+  type    = "A"
+  content = "192.0.2.1"
   ttl     = 1
-  proxied = false
+  proxied = true
 }
 
 # ------------ PROJECT SUBDOMAINS ------------
@@ -335,6 +339,22 @@ resource "cloudflare_ruleset" "bsoyka_me_redirects" {
           preserve_query_string = true
           target_url = {
             expression = "concat(\"https://gallery.soyka.photos\", http.request.uri.path)"
+          }
+        }
+      }
+    },
+    {
+      ref         = "photos_to_soyka_photos"
+      description = "photos.bsoyka.me/* -> www.soyka.photos/*"
+      expression  = "(http.host eq \"photos.bsoyka.me\")"
+      action      = "redirect"
+      enabled     = true
+      action_parameters = {
+        from_value = {
+          status_code           = 302
+          preserve_query_string = true
+          target_url = {
+            expression = "concat(\"https://www.soyka.photos\", http.request.uri.path)"
           }
         }
       }
