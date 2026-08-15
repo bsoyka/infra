@@ -216,32 +216,6 @@ resource "cloudflare_dns_record" "bsoyka_me_medium_txt" {
   proxied = false
 }
 
-# Minecraft
-
-resource "cloudflare_dns_record" "bsoyka_me_mc_a" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "mc.bsoyka.me"
-  type    = "A"
-  content = "51.81.50.202"
-  ttl     = 1
-  proxied = false
-}
-
-resource "cloudflare_dns_record" "bsoyka_me_minecraft_tcp_mc_srv" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "_minecraft._tcp.mc.bsoyka.me"
-  type    = "SRV"
-  data = {
-    port     = 24812
-    priority = 0
-    target   = "mc.bsoyka.me"
-    weight   = 0
-  }
-  priority = 0
-  ttl      = 1
-  proxied  = false
-}
-
 # Mystery Egg
 
 resource "cloudflare_dns_record" "bsoyka_me_mysteryegg_cname" {
@@ -267,17 +241,6 @@ resource "cloudflare_dns_record" "bsoyka_me_github_challenge_mystery_egg_mystery
   name    = "_github-challenge-mystery-egg.mysteryegg.bsoyka.me"
   type    = "TXT"
   content = "8880f8886f"
-  ttl     = 1
-  proxied = false
-}
-
-# wb.bsoyka.me (Google Sites)
-
-resource "cloudflare_dns_record" "bsoyka_me_wb_cname" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "wb.bsoyka.me"
-  type    = "CNAME"
-  content = "ghs.googlehosted.com"
   ttl     = 1
   proxied = false
 }
