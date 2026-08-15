@@ -31,11 +31,13 @@ resource "cloudflare_dns_record" "bsoyka_link_apex_a" {
 }
 
 resource "cloudflare_dns_record" "bsoyka_link_apex_txt" {
+  for_each = toset(["google-site-verification=NGEVnPDMIZA1Nkw1hMIp0i78s6vy1araVCMmClhkAsw", "\"v=spf1 -all\""])
+
   zone_id = local.zone_ids["bsoyka.link"]
   name    = "bsoyka.link"
   type    = "TXT"
-  content = "\"v=spf1 -all\""
-  ttl     = 1
+  content = each.key
+  ttl     = 3600
   proxied = false
 }
 

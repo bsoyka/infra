@@ -24,3 +24,14 @@ locals {
 # AAAA placeholder that Cloudflare manages automatically as a side effect of
 # the `hub-construction` Worker's Custom Domain binding -- see
 # workers/workers-hub-construction.tf.
+
+resource "cloudflare_dns_record" "howlonghasthehubbeenunderconstruction_com_apex_txt" {
+  for_each = toset(["google-site-verification=ZPlmfpuzZOCGCaFrFS7RH8WoKHtEMF1P0eke6-wWOfM", "\"v=spf1 -all\""])
+
+  zone_id = local.zone_ids["howlonghasthehubbeenunderconstruction.com"]
+  name    = "howlonghasthehubbeenunderconstruction.com"
+  type    = "TXT"
+  content = each.key
+  ttl     = 3600
+  proxied = false
+}

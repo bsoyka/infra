@@ -43,6 +43,17 @@ resource "cloudflare_dns_record" "headshotguy_net_www_a" {
   proxied = true
 }
 
+resource "cloudflare_dns_record" "headshotguy_net_apex_txt" {
+  for_each = toset(["google-site-verification=TdjvMh5swrA-Mgye-rZmnIQdEqgGOZjwty5q6E4IVQw", "\"v=spf1 -all\""])
+
+  zone_id = local.zone_ids["headshotguy.net"]
+  name    = "headshotguy.net"
+  type    = "TXT"
+  content = each.key
+  ttl     = 3600
+  proxied = false
+}
+
 resource "cloudflare_ruleset" "headshotguy_net_redirects" {
   zone_id = local.zone_ids["headshotguy.net"]
   name    = "default"

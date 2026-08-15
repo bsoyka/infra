@@ -42,11 +42,13 @@ resource "cloudflare_dns_record" "lunarleisure_com_apex_mx" {
 }
 
 resource "cloudflare_dns_record" "lunarleisure_com_apex_txt" {
+  for_each = toset(["google-site-verification=xiksyVWwtCrgy7LmQkEJMl9hTpYiqYaBc-3bm7RiusE", "\"v=spf1 include:_spf.mx.cloudflare.net ~all\""])
+
   zone_id = local.zone_ids["lunarleisure.com"]
   name    = "lunarleisure.com"
   type    = "TXT"
-  content = "v=spf1 include:_spf.mx.cloudflare.net ~all"
-  ttl     = 1
+  content = each.key
+  ttl     = 3600
   proxied = false
 }
 
