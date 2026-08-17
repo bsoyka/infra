@@ -78,6 +78,26 @@ resource "cloudflare_dns_record" "bensoyka_com_mail_mx" {
 
 # ------------ PROJECT SUBDOMAINS ------------
 
+# Assets
+
+resource "cloudflare_dns_record" "bensoyka_com_assets_cname" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "assets.bensoyka.com"
+  type    = "CNAME"
+  content = "d1pznm5e2o8e2c.cloudfront.net"
+  ttl     = 1
+  proxied = false
+}
+
+resource "cloudflare_dns_record" "bensoyka_com_assets_aws_cname" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "_a8ba459ade216a7a49e6732618703fd7.assets.bensoyka.com"
+  type    = "CNAME"
+  content = "_fb86d183d13c9be82c6cf01373e854fe.jkddzztszm.acm-validations.aws"
+  ttl     = 1
+  proxied = false
+}
+
 # Calendar
 
 resource "cloudflare_dns_record" "bensoyka_com_cal_cname" {
