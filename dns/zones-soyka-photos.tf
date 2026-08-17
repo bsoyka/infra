@@ -113,7 +113,7 @@ resource "cloudflare_dns_record" "soyka_photos_bounce_billing_cname" {
   zone_id = local.zone_ids["soyka.photos"]
   name    = "bounce.billing.soyka.photos"
   type    = "CNAME"
-  content = "custom-email-domain.stripe.com."
+  content = "custom-email-domain.stripe.com"
   ttl     = 1
   proxied = false
 }

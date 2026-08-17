@@ -94,7 +94,7 @@ locals {
     "${selector}._domainkey.billing.soyka.photos" => {
       zone    = "soyka.photos"
       type    = "CNAME"
-      content = "${selector}.dkim.custom-email-domain.stripe.com."
+      content = "${selector}.dkim.custom-email-domain.stripe.com"
       ttl     = 1
     }
   }
