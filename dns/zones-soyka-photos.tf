@@ -98,6 +98,28 @@ resource "cloudflare_dns_record" "soyka_photos_www_cname" {
   proxied = false
 }
 
+# Billing emails via Stripe
+
+resource "cloudflare_dns_record" "soyka_photos_billing_txt" {
+  zone_id = local.zone_ids["soyka.photos"]
+  name    = "billing.soyka.photos"
+  type    = "TXT"
+  content = "stripe-verification=e60b9386772407e02c0729f3632f18b4de4c5868ef9e5ba428fa62c6ba8f2d89"
+  ttl     = 1
+  proxied = false
+}
+
+resource "cloudflare_dns_record" "soyka_photos_bounce_billing_cname" {
+  zone_id = local.zone_ids["soyka.photos"]
+  name    = "bounce.billing.soyka.photos"
+  type    = "CNAME"
+  content = "custom-email-domain.stripe.com."
+  ttl     = 1
+  proxied = false
+}
+
+# Redirects
+
 resource "cloudflare_ruleset" "soyka_photos_redirects" {
   zone_id = local.zone_ids["soyka.photos"]
   name    = "default"

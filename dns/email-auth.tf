@@ -50,6 +50,7 @@ locals {
     "_dmarc.bensoyka.com"   = { zone = "bensoyka.com", content = "v=DMARC1; p=quarantine; rua=mailto:3967fd5120d64c12b77cf3fa5f9400dc@dmarc-reports.cloudflare.net", ttl = 1 }
     "_dmarc.bsoyka.me"      = { zone = "bsoyka.me", content = "v=DMARC1; p=quarantine", ttl = 1 }
     "_dmarc.soyka.photos"   = { zone = "soyka.photos", content = "v=DMARC1; p=quarantine", ttl = 1 }
+    "_dmarc.billing.soyka.photos"   = { zone = "soyka.photos", content = "v=DMARC1; p=quarantine", ttl = 1 }
     "_dmarc.mail.bsoyka.me" = { zone = "bsoyka.me", content = "v=DMARC1; p=quarantine; adkim=s", ttl = 1 }
 
     # Zones that send nothing.
@@ -78,10 +79,30 @@ locals {
     }
   }
 
+  # Same for Stripe for billing.soyka.photos
+  stripe_dkim_selectors = [
+    "fksu5m54ythtjwubngwdc6jnahuj5nst",
+    "rd5qllmixrpjargmkwxlah5l4457vmwr",
+    "k3irg2fr2f4k6lbkezcn5xrmkzfdvlfa",
+    "jurncgwqjjqzvlotik6a5tpdd7h23rhy",
+    "veshtb7a6ueqk3sf2eq3clkkrg5qna4e",
+    "5tv7qxxgaoayg4ss7df5gl23dbbryjqq"
+  ]
+
+  stripe_dkim_records = {
+    for selector in local.stripe_dkim_selectors :
+    "${selector}._domainkey.billing.soyka.photos" => {
+      zone    = "soyka.photos"
+      type    = "CNAME"
+      content = "${selector}.dkim.custom-email-domain.stripe.com."
+      ttl     = 1
+    }
+  }
+
   # DKIM. Providers publish these either as a CNAME pointing at a key they
   # rotate themselves (iCloud, SES, AnonAddy) or as a TXT holding the key
   # directly (Cloudflare Email).
-  dkim_records = merge(local.ses_dkim_records, {
+  dkim_records = merge(local.ses_dkim_records, local.stripe_dkim_records, {
     # iCloud Mail
     "sig1._domainkey.bensoyka.com" = { zone = "bensoyka.com", type = "CNAME", content = "sig1.dkim.bensoyka.com.at.icloudmailadmin.com", ttl = 1 }
     "sig1._domainkey.bsoyka.me"    = { zone = "bsoyka.me", type = "CNAME", content = "sig1.dkim.bsoyka.me.at.icloudmailadmin.com", ttl = 1 }
