@@ -76,6 +76,30 @@ resource "cloudflare_dns_record" "bensoyka_com_mail_mx" {
   proxied  = false
 }
 
+# ------------ PGP KEY PUBLICATION ------------
+
+# Use OpenPGP's WKD-as-a-service
+
+resource "cloudflare_dns_record" "bensoyka_com_wkd_cname" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "openpgpkey.bensoyka.com"
+  type    = "CNAME"
+  content = "wkd.keys.openpgp.org"
+  ttl     = 1
+  proxied = false
+}
+
+# Share the primary ID and location via DNS
+
+resource "cloudflare_dns_record" "bensoyka_com_pgp_txt" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "ben._pka.bensoyka.com"
+  type    = "TXT"
+  content = "v=pka1;fpr=BC4876BDC8AB5AB8C9CB81659497E30583D68D89;uri=https://bensoyka.com/key.asc"
+  ttl     = 1
+  proxied = false
+}
+
 # ------------ PROJECT SUBDOMAINS ------------
 
 # Assets
