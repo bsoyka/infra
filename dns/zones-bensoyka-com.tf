@@ -97,6 +97,17 @@ resource "cloudflare_dns_record" "bensoyka_com_wkd_cname" {
 
 # ------------ PROJECT SUBDOMAINS ------------
 
+# Keys (https://keys.bensoyka.com, bsoyka/keys): S3 + CloudFront
+
+resource "cloudflare_dns_record" "bensoyka_com_5639e59bb0068eeb4902868e7046f83e_keys_cname" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "_5639e59bb0068eeb4902868e7046f83e.keys.bensoyka.com"
+  type    = "CNAME"
+  content = "_dcbeb13202ef8c210a7b8fca6173a795.wzccmgtwzk.acm-validations.aws"
+  ttl     = 1
+  proxied = false
+}
+
 # Assets
 
 resource "cloudflare_dns_record" "bensoyka_com_assets_cname" {
