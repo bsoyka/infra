@@ -28,7 +28,7 @@ locals {
 # workers/workers-website.tf.
 
 resource "cloudflare_dns_record" "bsoyka_me_apex_txt" {
-  for_each = toset(["\"MS=ms91612553\"", "\"abuseipdb-verification=fBJQRaKN\"", "\"apple-domain=95jSfw1eSMgiCbnX\"", "\"apple-domain=GlJq0rCqk0wARSgv\"", "\"apple-domain=Mmk69XPD4Sj7l2cn\"", "\"google-site-verification=div3eS2o7A0sZgTmGk_CrQ8ZzbxvhWhcXWb-1l1iT7U\"", "\"keybase-site-verification=8mkbKsdi1n4xnqWPXlqea0nQ3r29ltiNcSn1_TugKvU\"", "\"pinterest-site-verification=6743ee9d28ca9087c198e888f0554028\""])
+  for_each = toset(["\"MS=ms91612553\"", "\"abuseipdb-verification=fBJQRaKN\"", "\"apple-domain=95jSfw1eSMgiCbnX\"", "\"apple-domain=GlJq0rCqk0wARSgv\"", "\"apple-domain=Mmk69XPD4Sj7l2cn\"", "\"google-site-verification=div3eS2o7A0sZgTmGk_CrQ8ZzbxvhWhcXWb-1l1iT7U\"", "\"keybase-site-verification=8mkbKsdi1n4xnqWPXlqea0nQ3r29ltiNcSn1_TugKvU\"", "\"pinterest-site-verification=6743ee9d28ca9087c198e888f0554028\"", "\"aspe:keys.bensoyka.com:NGXUYTLMNMHQGGMPHUDLAWXOLY\""])
 
   zone_id = local.zone_ids["bsoyka.me"]
   name    = "bsoyka.me"
