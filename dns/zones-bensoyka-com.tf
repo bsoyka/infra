@@ -28,7 +28,7 @@ locals {
 # see workers/workers-website.tf.
 
 resource "cloudflare_dns_record" "bensoyka_com_apex_txt" {
-  for_each = toset(["\"apple-domain=CLN3hTkjJIb9wrXk\"", "\"google-site-verification=3ZcREVrGG9LkdcrAl3h8FxnCJ0IYmg4Ysay8gmUVidQ\""])
+  for_each = toset(["\"apple-domain=CLN3hTkjJIb9wrXk\"", "\"google-site-verification=3ZcREVrGG9LkdcrAl3h8FxnCJ0IYmg4Ysay8gmUVidQ\"", "\"aspe:keys.bensoyka.com:NGXUYTLMNMHQGGMPHUDLAWXOLY\""])
 
   zone_id = local.zone_ids["bensoyka.com"]
   name    = "bensoyka.com"
@@ -90,8 +90,8 @@ resource "cloudflare_dns_record" "bensoyka_com_wkd_cname" {
 }
 
 # Everything about my keys is at https://keys.bensoyka.com (bsoyka/keys).
-# TODO after the keys ceremony: add "aspe:keys.bensoyka.com:<fp>" (from
-# bsoyka/keys data/asp-public.json) to the apex TXT set above as the Keyoxide proof.
+# The apex TXT "aspe:keys.bensoyka.com:…" above is the Keyoxide proof that this
+# domain belongs to my Keyoxide profile (bsoyka/keys data/asp-public.json).
 #
 # (The old ben._pka PKA record was removed: GnuPG dropped PKA lookups in 2.3.)
 
