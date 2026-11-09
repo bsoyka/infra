@@ -229,15 +229,6 @@ resource "cloudflare_dns_record" "bsoyka_me_github_pages_challenge_bsoyka_txt" {
   proxied = false
 }
 
-resource "cloudflare_dns_record" "bsoyka_me_hello_pka_txt" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "hello._pka.bsoyka.me"
-  type    = "TXT"
-  content = "v=pka1;fpr=0CA7CC16A64B68F3048EE8FEA5E726D5A65228EA;uri=https://bsoyka.me/key.asc"
-  ttl     = 1
-  proxied = false
-}
-
 resource "cloudflare_ruleset" "bsoyka_me_redirects" {
   zone_id = local.zone_ids["bsoyka.me"]
   name    = "default"

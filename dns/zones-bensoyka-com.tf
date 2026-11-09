@@ -89,16 +89,11 @@ resource "cloudflare_dns_record" "bensoyka_com_wkd_cname" {
   proxied = false
 }
 
-# Share the primary ID and location via DNS
-
-resource "cloudflare_dns_record" "bensoyka_com_pgp_txt" {
-  zone_id = local.zone_ids["bensoyka.com"]
-  name    = "ben._pka.bensoyka.com"
-  type    = "TXT"
-  content = "v=pka1;fpr=BC4876BDC8AB5AB8C9CB81659497E30583D68D89;uri=https://bensoyka.com/key.asc"
-  ttl     = 1
-  proxied = false
-}
+# Everything about my keys is at https://keys.bensoyka.com (bsoyka/keys).
+# TODO after the keys ceremony: add "aspe:keys.bensoyka.com:<fp>" (from
+# bsoyka/keys data/asp-public.json) to the apex TXT set above as the Keyoxide proof.
+#
+# (The old ben._pka PKA record was removed: GnuPG dropped PKA lookups in 2.3.)
 
 # ------------ PROJECT SUBDOMAINS ------------
 
