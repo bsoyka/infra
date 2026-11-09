@@ -99,6 +99,15 @@ resource "cloudflare_dns_record" "bensoyka_com_wkd_cname" {
 
 # Keys (https://keys.bensoyka.com, bsoyka/keys): S3 + CloudFront
 
+resource "cloudflare_dns_record" "bensoyka_com_keys_cname" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "keys.bensoyka.com"
+  type    = "CNAME"
+  content = "d1v7h1djvoupt2.cloudfront.net"
+  ttl     = 1
+  proxied = false
+}
+
 resource "cloudflare_dns_record" "bensoyka_com_5639e59bb0068eeb4902868e7046f83e_keys_cname" {
   zone_id = local.zone_ids["bensoyka.com"]
   name    = "_5639e59bb0068eeb4902868e7046f83e.keys.bensoyka.com"
