@@ -47,11 +47,11 @@ locals {
   # reporting rather than each needing its own dashboard step.
   dmarc_records = {
     # Zones that send mail.
-    "_dmarc.bensoyka.com"   = { zone = "bensoyka.com", content = "v=DMARC1; p=quarantine; rua=mailto:3967fd5120d64c12b77cf3fa5f9400dc@dmarc-reports.cloudflare.net", ttl = 1 }
-    "_dmarc.bsoyka.me"      = { zone = "bsoyka.me", content = "v=DMARC1; p=quarantine", ttl = 1 }
-    "_dmarc.soyka.photos"   = { zone = "soyka.photos", content = "v=DMARC1; p=quarantine", ttl = 1 }
-    "_dmarc.billing.soyka.photos"   = { zone = "soyka.photos", content = "v=DMARC1; p=quarantine", ttl = 1 }
-    "_dmarc.mail.bsoyka.me" = { zone = "bsoyka.me", content = "v=DMARC1; p=quarantine; adkim=s", ttl = 1 }
+    "_dmarc.bensoyka.com"         = { zone = "bensoyka.com", content = "v=DMARC1; p=quarantine; rua=mailto:3967fd5120d64c12b77cf3fa5f9400dc@dmarc-reports.cloudflare.net", ttl = 1 }
+    "_dmarc.bsoyka.me"            = { zone = "bsoyka.me", content = "v=DMARC1; p=quarantine", ttl = 1 }
+    "_dmarc.soyka.photos"         = { zone = "soyka.photos", content = "v=DMARC1; p=quarantine", ttl = 1 }
+    "_dmarc.billing.soyka.photos" = { zone = "soyka.photos", content = "v=DMARC1; p=quarantine", ttl = 1 }
+    "_dmarc.mail.bsoyka.me"       = { zone = "bsoyka.me", content = "v=DMARC1; p=quarantine; adkim=s", ttl = 1 }
 
     # Zones that send nothing.
     "_dmarc.bsoyka.link"                               = { zone = "bsoyka.link", content = "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;", ttl = 1 }
