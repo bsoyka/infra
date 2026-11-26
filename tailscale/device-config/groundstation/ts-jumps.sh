@@ -8,9 +8,9 @@
 # still maintains its ts-* chains but leaves the jumps to us.
 #
 # The exception pins no addresses, so the printer (or the LAN subnet) can change
-# without touching this: it only admits replies to connections postoffice itself
+# without touching this: it only admits replies to connections groundstation itself
 # opened on the LAN interface, plus mDNS so the printer can be found by name.
-# Neighbors on the building network still can't open connections to postoffice --
+# Neighbors on the building network still can't open connections to groundstation --
 # ts-input's DROP keeps doing that job as a side effect.
 #
 # Install: see README.md in this directory.

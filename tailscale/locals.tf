@@ -6,10 +6,10 @@ locals {
   # name rather than hostname -- several devices' hostnames are generic (localhost,
   # ipad, ubuntu) and would be ambiguous or collide with a future device.
   devices = {
-    townsquare     = "townsquare.${local.magicdns_suffix}"
-    missioncontrol = "missioncontrol.${local.magicdns_suffix}"
-    library        = "library.${local.magicdns_suffix}"
-    postoffice     = "postoffice.${local.magicdns_suffix}"
-    shitbox        = "shitbox.${local.magicdns_suffix}"
+    missioncontrol = "missioncontrol.${local.magicdns_suffix}" # MacBook Pro
+    pager          = "pager.${local.magicdns_suffix}"          # iPhone
+    clipboard      = "clipboard.${local.magicdns_suffix}"      # iPad
+    groundstation  = "groundstation.${local.magicdns_suffix}"  # Raspberry Pi
+    shitbox        = "shitbox.${local.magicdns_suffix}"        # Dell Latitude
   }
 }
