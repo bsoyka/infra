@@ -6,7 +6,6 @@ locals {
   # name rather than hostname -- several devices' hostnames are generic (localhost,
   # ipad, ubuntu) and would be ambiguous or collide with a future device.
   devices = {
-    trailhead  = "trailhead.${local.magicdns_suffix}"
     townsquare = "townsquare.${local.magicdns_suffix}"
     library    = "library.${local.magicdns_suffix}"
     postoffice = "postoffice.${local.magicdns_suffix}"
