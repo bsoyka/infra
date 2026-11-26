@@ -1,0 +1,14 @@
+[Unit]
+Description=Wire tailscaled firewall chains (netfilter-mode=nodivert)
+After=tailscaled.service
+# Re-run whenever tailscaled restarts, since it rebuilds its chains.
+PartOf=tailscaled.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+Environment=PRINTER=100.110.197.X
+ExecStart=/usr/local/sbin/ts-jumps
+
+[Install]
+WantedBy=tailscaled.service
