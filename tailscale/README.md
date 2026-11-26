@@ -78,7 +78,7 @@ There is no CI pipeline -- plans and applies run locally.
   shows drift forever. Keep autoApprovers and explicit route management mutually exclusive.
 - Tagged devices' keys already never expire, so a tagged device deliberately gets no
   `tailscale_device_key` resource -- tagged devices reject attempts to change that setting.
-  `tag:server` is the only tag: always-on machines not tied to a person (`groundstation`, and
+  `tag:server` is the only tag: always-on machines not tied to a person (`groundstation`, `shitbox`, and
   future ones like Watchtower). Admins can Tailscale SSH into them.
 - Applying tags to a currently-untagged device is a one-way door -- ownership transfers to
   `tagged-devices` and key expiry is disabled for it.
