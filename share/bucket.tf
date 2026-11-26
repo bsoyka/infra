@@ -1,6 +1,6 @@
 # Private bucket for temporary shared files. Nothing is public at the bucket
 # level: reads go through CloudFront (cdn.tf), writes come only from the
-# per-client IAM users (uploaders.tf).
+# per-client IAM users (uploaders.tf), directly or through URLs they presign.
 
 resource "aws_s3_bucket" "share" {
   bucket = local.bucket_name
@@ -44,9 +44,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "share" {
     }
   }
 
-  # Abandoned multipart uploads (large attachments that failed partway) get
-  # cleaned up too. Nothing can be written outside the prefixes above: the
-  # uploader policies don't allow it.
+  # Abandoned multipart uploads (large files that failed partway) get cleaned
+  # up too. Nothing can be written outside the prefixes above: the uploader
+  # policies don't allow it.
   rule {
     id     = "abort-incomplete-multipart"
     status = "Enabled"
@@ -56,6 +56,20 @@ resource "aws_s3_bucket_lifecycle_configuration" "share" {
     abort_incomplete_multipart_upload {
       days_after_initiation = 1
     }
+  }
+}
+
+# Browsers upload straight to S3 with URLs the share-upload Worker presigns, so
+# the upload page's origin needs CORS for PUT. This grants no access by itself:
+# every request still has to carry a valid signature.
+resource "aws_s3_bucket_cors_configuration" "share" {
+  bucket = aws_s3_bucket.share.id
+
+  cors_rule {
+    allowed_methods = ["PUT"]
+    allowed_origins = local.upload_origins
+    allowed_headers = ["content-type"]
+    max_age_seconds = 3600
   }
 }
 

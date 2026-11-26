@@ -11,4 +11,5 @@ Tool versions are pinned in `mise.toml`.
 | [`dns/`](dns) | Cloudflare zones, DNS records, redirects, and zone settings |
 | [`workers/`](workers) | Cloudflare Workers Custom Domains and KV namespaces |
 | [`tailscale/`](tailscale) | Tailscale ACL policy, DNS, tailnet settings, and device configuration |
-| [`share/`](share) | `share.bensoyka.com`: S3 + CloudFront for temporary screenshots and email attachments |
+| [`share/`](share) | `share.bensoyka.com`: S3 + CloudFront for temporary screenshots and shared files |
+| [`access/`](access) | Cloudflare Access for `bensoyka.net`, the domain for my own tools |

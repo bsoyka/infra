@@ -21,3 +21,8 @@ output "acm_validation_records" {
 output "uploader_users" {
   value = { for k, u in aws_iam_user.uploader : k => u.name }
 }
+
+output "distribution_id" {
+  description = "CloudFront distribution ID. Goes in share-upload's wrangler.toml (DISTRIBUTION_ID)."
+  value       = aws_cloudfront_distribution.share.id
+}

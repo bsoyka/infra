@@ -25,6 +25,7 @@ locals {
     "bsoyka.me"    = { zone = "bsoyka.me", content = "v=spf1 include:icloud.com ~all", ttl = 1 }
     "soyka.photos" = { zone = "soyka.photos", content = "v=spf1 include:icloud.com ~all", ttl = 1 }
 
+    "bensoyka.net"                              = { zone = "bensoyka.net", content = "v=spf1 -all", ttl = 1 }
     "bsoyka.link"                               = { zone = "bsoyka.link", content = "v=spf1 -all", ttl = 1 }
     "headshotguy.net"                           = { zone = "headshotguy.net", content = "v=spf1 -all", ttl = 1 }
     "howlonghasthehubbeenunderconstruction.com" = { zone = "howlonghasthehubbeenunderconstruction.com", content = "v=spf1 -all", ttl = 1 }
@@ -54,6 +55,7 @@ locals {
     "_dmarc.mail.bsoyka.me"       = { zone = "bsoyka.me", content = "v=DMARC1; p=quarantine; adkim=s", ttl = 1 }
 
     # Zones that send nothing.
+    "_dmarc.bensoyka.net"                              = { zone = "bensoyka.net", content = "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;", ttl = 1 }
     "_dmarc.bsoyka.link"                               = { zone = "bsoyka.link", content = "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;", ttl = 1 }
     "_dmarc.headshotguy.net"                           = { zone = "headshotguy.net", content = "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;", ttl = 1 }
     "_dmarc.howlonghasthehubbeenunderconstruction.com" = { zone = "howlonghasthehubbeenunderconstruction.com", content = "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s;", ttl = 1 }
@@ -114,6 +116,7 @@ locals {
 
     # Null DKIM keys: an empty p= asserts that no key can validly sign for these
     # zones, which is what completes the p=reject posture above.
+    "*._domainkey.bensoyka.net"                              = { zone = "bensoyka.net", type = "TXT", content = "v=DKIM1; p=", ttl = 1 }
     "*._domainkey.bsoyka.link"                               = { zone = "bsoyka.link", type = "TXT", content = "v=DKIM1; p=", ttl = 1 }
     "*._domainkey.headshotguy.net"                           = { zone = "headshotguy.net", type = "TXT", content = "v=DKIM1; p=", ttl = 1 }
     "*._domainkey.howlonghasthehubbeenunderconstruction.com" = { zone = "howlonghasthehubbeenunderconstruction.com", type = "TXT", content = "v=DKIM1; p=", ttl = 1 }

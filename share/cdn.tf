@@ -29,10 +29,10 @@ data "aws_cloudfront_cache_policy" "caching_optimized" {
 # Uploaded files are content I didn't author for this domain, so nothing
 # served here should be able to run script as share.bensoyka.com.
 #
-# - screenshot/ (screenshots): rendered inline, under a CSP sandbox.
-# - mail/ (attachments): forced to download. A sandbox CSP would also stop
-#   browsers' built-in PDF viewers, and most attachments are PDFs, so instead
-#   these never render on this origin at all.
+# - inline prefixes (screenshot/): rendered inline, under a CSP sandbox.
+# - download prefixes (file/): forced to download. A sandbox CSP
+#   would also stop browsers' built-in PDF viewers, and most shared files are
+#   PDFs, so instead these never render on this origin at all.
 #
 # Both get nosniff, no-referrer, HSTS, and a noindex header.
 locals {
@@ -125,15 +125,21 @@ resource "aws_cloudfront_distribution" "share" {
     response_headers_policy_id = aws_cloudfront_response_headers_policy.share["inline"].id
   }
 
-  ordered_cache_behavior {
-    path_pattern               = "${local.prefixes.mail.path}*"
-    target_origin_id           = "s3-share"
-    viewer_protocol_policy     = "redirect-to-https"
-    allowed_methods            = ["GET", "HEAD"]
-    cached_methods             = ["GET", "HEAD"]
-    compress                   = true
-    cache_policy_id            = data.aws_cloudfront_cache_policy.caching_optimized.id
-    response_headers_policy_id = aws_cloudfront_response_headers_policy.share["download"].id
+  # Every download prefix gets the download policy; anything else (inline
+  # prefixes) falls through to the default behavior above.
+  dynamic "ordered_cache_behavior" {
+    for_each = { for k, p in local.prefixes : k => p if p.render == "download" }
+
+    content {
+      path_pattern               = "${ordered_cache_behavior.value.path}*"
+      target_origin_id           = "s3-share"
+      viewer_protocol_policy     = "redirect-to-https"
+      allowed_methods            = ["GET", "HEAD"]
+      cached_methods             = ["GET", "HEAD"]
+      compress                   = true
+      cache_policy_id            = data.aws_cloudfront_cache_policy.caching_optimized.id
+      response_headers_policy_id = aws_cloudfront_response_headers_policy.share["download"].id
+    }
   }
 
   restrictions {

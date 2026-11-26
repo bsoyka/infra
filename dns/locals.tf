@@ -5,6 +5,7 @@ locals {
   # the cloudflare_zone resources' creation order.
   zone_ids = {
     "bensoyka.com"                              = "c0e27eb0bfcc5e664c3bc8f3019167ad"
+    "bensoyka.net"                              = "6ac1357287b194d175ad14a29af29a18"
     "bsoyka.link"                               = "f1f31755dacf5bfb75f1e4ab6c7c671b"
     "bsoyka.me"                                 = "8c2a35e47279bf4b28daaec46b569b57"
     "headshotguy.net"                           = "a593b179391fe94601df4aea4763007e"
@@ -17,5 +18,5 @@ locals {
   # Curated zone settings (TLS/HTTPS security core pinned everywhere, plus a
   # handful of other settings that already diverge per zone), assembled from
   # each zone's file.
-  zone_settings = merge(local.bsoyka_me_settings, local.bensoyka_com_settings, local.soyka_photos_settings, local.lunarleisure_com_settings, local.mountainspalette_com_settings, local.bsoyka_link_settings, local.headshotguy_net_settings, local.hub_construction_settings)
+  zone_settings = merge(local.bsoyka_me_settings, local.bensoyka_com_settings, local.bensoyka_net_settings, local.soyka_photos_settings, local.lunarleisure_com_settings, local.mountainspalette_com_settings, local.bsoyka_link_settings, local.headshotguy_net_settings, local.hub_construction_settings)
 }

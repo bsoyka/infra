@@ -15,6 +15,7 @@ themselves.
 | `providers.tf` | Cloudflare provider |
 | `locals.tf` | Account ID and the zone ID map (kept in sync by hand with `dns/locals.tf`) |
 | `workers-*.tf` | One file per Worker project: its Custom Domain(s) and KV namespace(s), if any |
+| `landing-bensoyka-net/` | The `bensoyka.net` landing page script, the one Worker whose code lives here (see below) |
 
 ## Why not manage the script itself?
 
@@ -28,6 +29,9 @@ every Worker project's own build tooling. Instead:
   the DNS-side landmine that motivated this split).
 - **Each Worker's own repo owns**: the code, and deploying it via `wrangler deploy` (or
   `opennextjs-cloudflare deploy`) exactly as today.
+
+One exception: the `bensoyka.net` landing page is a single static file with no build step, so its
+script is managed here directly (`workers-bensoyka-net.tf`).
 
 The two don't conflict. A project's `wrangler.jsonc` still declares the same KV namespace ID and
 `routes: [{ pattern: "...", custom_domain: true }]` — those are bindings the *script* needs to
