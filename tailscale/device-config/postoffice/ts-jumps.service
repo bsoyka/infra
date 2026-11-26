@@ -7,7 +7,6 @@ PartOf=tailscaled.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-Environment=PRINTER=100.110.197.136
 Environment=IFACE=wlan0
 ExecStart=/usr/local/sbin/ts-jumps
 
