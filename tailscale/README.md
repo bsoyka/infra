@@ -78,8 +78,8 @@ There is no CI pipeline -- plans and applies run locally.
   shows drift forever. Keep autoApprovers and explicit route management mutually exclusive.
 - Tagged devices' keys already never expire, so a tagged device deliberately gets no
   `tailscale_device_key` resource -- tagged devices reject attempts to change that setting.
-  `postoffice` is untagged with expiry explicitly disabled, so it genuinely needs one. No device
-  is currently tagged; the tags in `acl.tf` are kept for future servers (e.g. Watchtower).
+  `tag:server` is the only tag: always-on machines not tied to a person (`postoffice`, and
+  future ones like Watchtower). Admins can Tailscale SSH into them.
 - Applying tags to a currently-untagged device is a one-way door -- ownership transfers to
   `tagged-devices` and key expiry is disabled for it.
 - A device leaving the tailnet breaks `plan` for the entire module, since its `data.tailscale_device`
