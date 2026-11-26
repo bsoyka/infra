@@ -4,16 +4,18 @@
 #
 # Why: the building's LAN is CGNAT space (100.110.x.x), and ts-input drops anything
 # from 100.64.0.0/10 that doesn't arrive on tailscale0, so the printer's replies on
-# wlan0 were silently dropped. With `tailscale set --netfilter-mode=nodivert`,
+# the LAN interface were silently dropped. With `tailscale set --netfilter-mode=nodivert`,
 # tailscaled still maintains its ts-* chains but leaves the jumps to us.
 #
 # Install: see README.md in this directory.
 set -eu
 
 # The printer's LAN address. If it moves around (no DHCP reservation on the
-# building network), widen this to wlan0's subnet, 100.110.197.128/26 -- at the
-# cost of trusting every LAN device in that range that claims a tailnet-looking IP.
-PRINTER="${PRINTER:-100.110.197.X}"
+# building network), widen this to the LAN interface's subnet -- at the cost of
+# trusting every LAN device in that range that claims a tailnet-looking IP.
+PRINTER="${PRINTER:?set PRINTER to the printer's LAN address}"
+# The interface the printer is reached on (`ip route get "$PRINTER"` shows it).
+IFACE="${IFACE:-eth0}"
 
 # Wait for tailscaled to create its chains (up to 30s).
 i=0
@@ -32,7 +34,7 @@ ensure() {
     "$cmd" -t "$table" -I "$chain" "$pos" "$@"
 }
 
-ensure iptables filter INPUT 1 -s "$PRINTER" -i wlan0 -j ACCEPT
+ensure iptables filter INPUT 1 -s "$PRINTER" -i "$IFACE" -j ACCEPT
 ensure iptables filter INPUT 2 -j ts-input
 
 # The exit node depends on these: forwarding and NAT for clients' traffic.
