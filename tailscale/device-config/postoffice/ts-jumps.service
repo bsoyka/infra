@@ -7,7 +7,8 @@ PartOf=tailscaled.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-Environment=PRINTER=100.110.197.X
+Environment=PRINTER=100.110.X.X
+Environment=IFACE=eth0
 ExecStart=/usr/local/sbin/ts-jumps
 
 [Install]
