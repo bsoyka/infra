@@ -11,12 +11,6 @@ resource "tailscale_device_subnet_routes" "groundstation" {
   routes = ["0.0.0.0/0", "::/0"]
 }
 
-# Renamed from postoffice (Nov 2026). Delete after the apply.
-moved {
-  from = tailscale_device_subnet_routes.postoffice
-  to   = tailscale_device_subnet_routes.groundstation
-}
-
 # Tagging is a one-way door: ownership moves from bensoyka6@ to tagged-devices and
 # key expiry is disabled for good.
 resource "tailscale_device_tags" "groundstation" {
@@ -26,14 +20,4 @@ resource "tailscale_device_tags" "groundstation" {
   # Terraform's graph doesn't know that tag assignment depends on tagOwners in the
   # ACL, so make the ordering explicit.
   depends_on = [tailscale_acl.this]
-}
-
-# Tagged devices never expire and reject key-expiry changes, so stop managing it.
-# destroy = false keeps Terraform from trying to re-enable expiry on the way out.
-removed {
-  from = tailscale_device_key.postoffice
-
-  lifecycle {
-    destroy = false
-  }
 }
