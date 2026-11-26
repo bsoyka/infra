@@ -76,15 +76,17 @@ There is no CI pipeline -- plans and applies run locally.
   `tailscale_device_subnet_routes` also manages, the two will fight: Terraform disables a
   non-declared route, the device re-advertises it, autoApprovers re-enables it, and the next plan
   shows drift forever. Keep autoApprovers and explicit route management mutually exclusive.
-- `townhall` is a tagged device (`tag:prod`, `tag:server`), so its key already never expires; it
-  deliberately has no `tailscale_device_key` resource, since tagged devices reject attempts to
-  change that setting. `postoffice` is untagged with expiry explicitly disabled, so it genuinely
-  needs one.
+- Tagged devices' keys already never expire, so a tagged device deliberately gets no
+  `tailscale_device_key` resource -- tagged devices reject attempts to change that setting.
+  `postoffice` is untagged with expiry explicitly disabled, so it genuinely needs one. No device
+  is currently tagged; the tags in `acl.tf` are kept for future servers (e.g. Watchtower).
 - Applying tags to a currently-untagged device is a one-way door -- ownership transfers to
   `tagged-devices` and key expiry is disabled for it.
 - A device leaving the tailnet breaks `plan` for the entire module, since its `data.tailscale_device`
-  lookup fails. Retiring a device means removing it from `local.devices` and running
-  `terraform state rm` on its resources in the same change.
+  lookup fails. Retiring a device means removing it from `local.devices` and deleting its
+  `device-*.tf` file, with a `removed { lifecycle { destroy = false } }` block for each of its
+  resources (see `devices.tf`) so Terraform forgets them instead of trying to modify a device
+  that's gone. Delete the `removed` blocks after the apply.
 - **Mullvad exit nodes** are granted through the policy's `nodeAttrs` (`mullvad` attribute on
   `autogroup:member`), not the admin console's "Add devices" list -- Tailscale allows only one
   method at a time. The add-on itself (and its license count) is bought by hand in the admin
