@@ -3,7 +3,7 @@
 Lets postoffice (the exit node) reach the printer on the building's CGNAT LAN
 while staying on the tailnet. See the comments in `ts-jumps.sh` for why.
 
-Set the printer's address and interface in `ts-jumps.service` first (`PRINTER=`, `IFACE=`), then on postoffice:
+The printer (HP DeskJet 2800, `printer.local`) is Wi-Fi only, at `100.110.197.136` on `wlan0` -- so postoffice needs Wi-Fi up even though it uses Ethernet otherwise. If the address changes, update `PRINTER=` in `ts-jumps.service`. On postoffice:
 
 ```sh
 sudo install -m 755 ts-jumps.sh /usr/local/sbin/ts-jumps
