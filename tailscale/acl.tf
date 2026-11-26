@@ -2,9 +2,9 @@
 
 locals {
   acl_tag_owners = {
+    # Always-on machines that aren't tied to a person: never-expiring keys, owned
+    # by the tailnet rather than a user.
     "tag:server" = ["autogroup:admin"]
-    "tag:prod"   = ["autogroup:admin"]
-    "tag:ci"     = ["autogroup:admin"]
   }
 }
 
@@ -34,14 +34,8 @@ locals {
     {
       action = "accept"
       src    = ["autogroup:admin"]
-      dst    = ["tag:prod"]
+      dst    = ["tag:server"]
       users  = ["autogroup:nonroot", "root"]
-    },
-    {
-      action = "accept"
-      src    = ["tag:ci"]
-      dst    = ["tag:prod"]
-      users  = ["autogroup:nonroot"]
     },
   ]
 }
