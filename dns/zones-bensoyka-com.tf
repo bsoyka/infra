@@ -137,6 +137,26 @@ resource "cloudflare_dns_record" "bensoyka_com_assets_aws_cname" {
   proxied = false
 }
 
+# Share (https://share.bensoyka.com, infra/share): S3 + CloudFront
+
+resource "cloudflare_dns_record" "bensoyka_com_share_cname" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "share.bensoyka.com"
+  type    = "CNAME"
+  content = "d1uzrsgkwr9j3q.cloudfront.net"
+  ttl     = 1
+  proxied = false
+}
+
+resource "cloudflare_dns_record" "bensoyka_com_share_aws_cname" {
+  zone_id = local.zone_ids["bensoyka.com"]
+  name    = "_22625d3df7fad0f35700a6b55cc19e00.share.bensoyka.com"
+  type    = "CNAME"
+  content = "_1a3ff9e12c2cf2ff001bcef37762937b.wzccmgtwzk.acm-validations.aws"
+  ttl     = 1
+  proxied = false
+}
+
 # Calendar
 
 resource "cloudflare_dns_record" "bensoyka_com_cal_cname" {

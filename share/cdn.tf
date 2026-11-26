@@ -29,7 +29,7 @@ data "aws_cloudfront_cache_policy" "caching_optimized" {
 # Uploaded files are content I didn't author for this domain, so nothing
 # served here should be able to run script as share.bensoyka.com.
 #
-# - shottr/ (screenshots): rendered inline, under a CSP sandbox.
+# - screenshot/ (screenshots): rendered inline, under a CSP sandbox.
 # - mail/ (attachments): forced to download. A sandbox CSP would also stop
 #   browsers' built-in PDF viewers, and most attachments are PDFs, so instead
 #   these never render on this origin at all.

@@ -26,7 +26,7 @@ or be wiped by uploads.
 
 | Prefix | Client | Expires | In the browser |
 | --- | --- | --- | --- |
-| `shottr/` | Shottr | 90 days | Rendered inline, under `Content-Security-Policy: sandbox` |
+| `screenshot/` | Shottr | 90 days | Rendered inline, under `Content-Security-Policy: sandbox` |
 | `mail/` | Thunderbird FileLink | 60 days | Always downloaded (`Content-Disposition: attachment`) |
 
 - Nobody can list the bucket; a link only works if you have the exact object name.
@@ -82,7 +82,7 @@ the client, then `aws iam delete-access-key --user-name bsoyka-share-<client> --
 
 **Shottr** (Settings → Uploading): Service "Amazon (AWS)", region `us-east-1`,
 bucket `bsoyka-share`, Public Bucket URL `https://share.bensoyka.com`, keys
-from `bsoyka-share-shottr`. Uploads must go under `shottr/`; the policy denies anything
+from `bsoyka-share-shottr`. Uploads must go under `screenshot/`; the policy denies anything
 else, which is a useful check that the prefix setting took.
 
 **Thunderbird** (S3 FileLink Provider add-on): same bucket and region, keys from
