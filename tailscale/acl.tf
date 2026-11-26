@@ -46,6 +46,21 @@ locals {
   ]
 }
 
+# ------------ NODE ATTRIBUTES ------------
+
+locals {
+  acl_node_attrs = [
+    # Mullvad exit nodes (paid add-on, bought in the admin console). Licenses are
+    # handed out first-come, first-served to targeted devices as they connect, so
+    # targeting every member device is fine even if it exceeds the license count.
+    # Tagged devices (townhall) aren't members and never take a license.
+    {
+      target = ["autogroup:member"]
+      attr   = ["mullvad"]
+    },
+  ]
+}
+
 # ------------ POLICY ------------
 
 # The Tailscale API's JSON policy validation doesn't accept a "//" note key (that's
@@ -57,5 +72,6 @@ resource "tailscale_acl" "this" {
     tagOwners = local.acl_tag_owners
     grants    = local.acl_grants
     ssh       = local.acl_ssh
+    nodeAttrs = local.acl_node_attrs
   })
 }

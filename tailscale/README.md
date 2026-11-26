@@ -85,4 +85,9 @@ There is no CI pipeline -- plans and applies run locally.
 - A device leaving the tailnet breaks `plan` for the entire module, since its `data.tailscale_device`
   lookup fails. Retiring a device means removing it from `local.devices` and running
   `terraform state rm` on its resources in the same change.
+- **Mullvad exit nodes** are granted through the policy's `nodeAttrs` (`mullvad` attribute on
+  `autogroup:member`), not the admin console's "Add devices" list -- Tailscale allows only one
+  method at a time. The add-on itself (and its license count) is bought by hand in the admin
+  console under General → Mullvad VPN, or Billing → Manage add-ons if checkout is locked because
+  the policy is externally managed. Licenses go to targeted devices first-come, first-served.
 - Auth keys, webhooks, contacts, and OAuth clients are deliberately out of scope.
