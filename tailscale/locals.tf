@@ -10,7 +10,6 @@ locals {
     townsquare = "townsquare.${local.magicdns_suffix}"
     library    = "library.${local.magicdns_suffix}"
     postoffice = "postoffice.${local.magicdns_suffix}"
-    townhall   = "townhall.${local.magicdns_suffix}"
     shitbox    = "shitbox.${local.magicdns_suffix}"
   }
 }

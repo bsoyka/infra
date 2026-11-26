@@ -53,7 +53,7 @@ locals {
     # Mullvad exit nodes (paid add-on, bought in the admin console). Licenses are
     # handed out first-come, first-served to targeted devices as they connect, so
     # targeting every member device is fine even if it exceeds the license count.
-    # Tagged devices (townhall) aren't members and never take a license.
+    # Tagged devices aren't members and never take a license.
     {
       target = ["autogroup:member"]
       attr   = ["mullvad"]
