@@ -3,7 +3,9 @@
 Lets postoffice (the exit node) reach the printer on the building's CGNAT LAN
 while staying on the tailnet. See the comments in `ts-jumps.sh` for why.
 
-The printer (HP DeskJet 2800, `printer.local`) is Wi-Fi only, at `100.110.197.136` on `wlan0` -- so postoffice needs Wi-Fi up even though it uses Ethernet otherwise. If the address changes, update `PRINTER=` in `ts-jumps.service`. On postoffice:
+The printer (HP DeskJet 2800, `printer.local`) is on the Wi-Fi side of the building
+network, reached over `wlan0` -- so postoffice needs Wi-Fi up even though it uses Ethernet
+otherwise. Nothing here pins the printer's address; CUPS finds it by name. On postoffice:
 
 ```sh
 sudo install -m 755 ts-jumps.sh /usr/local/sbin/ts-jumps
@@ -16,9 +18,9 @@ sudo systemctl enable --now ts-jumps
 Check:
 
 ```sh
-sudo iptables -S INPUT | head -3      # printer ACCEPT, then -j ts-input
+sudo iptables -S INPUT | head -4      # two wlan0 ACCEPTs, then -j ts-input
 sudo iptables -t nat -S POSTROUTING   # includes -j ts-postrouting
-ping -c 3 <printer address>
+avahi-resolve -n printer.local       # resolves to the printer's current address
 ```
 
 Then test the exit node from another device. Over SSH via Tailscale, run the install inside `tmux`; the session should survive (the `INPUT` policy is `ACCEPT`), but a dropped connection shouldn't leave it half done. To undo: `sudo systemctl disable --now ts-jumps`
