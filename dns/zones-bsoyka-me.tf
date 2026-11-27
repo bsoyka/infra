@@ -104,17 +104,6 @@ resource "cloudflare_dns_record" "bsoyka_me_aoc_ocr_cname" {
   proxied = false
 }
 
-# API
-
-resource "cloudflare_dns_record" "bsoyka_me_api_a" {
-  zone_id = local.zone_ids["bsoyka.me"]
-  name    = "api.bsoyka.me"
-  type    = "A"
-  content = "66.179.93.20"
-  ttl     = 1
-  proxied = true
-}
-
 # Calendar
 
 resource "cloudflare_dns_record" "bsoyka_me_cal_cname" {
@@ -306,22 +295,6 @@ resource "cloudflare_ruleset" "bsoyka_me_redirects" {
           preserve_query_string = true
           target_url = {
             expression = "concat(\"https://github.com/bsoyka\", http.request.uri.path)"
-          }
-        }
-      }
-    },
-    {
-      ref         = "blog_to_bsoyka_me_blog"
-      description = "blog.bsoyka.me/* -> bsoyka.me/blog/*"
-      expression  = "(http.host eq \"blog.bsoyka.me\")"
-      action      = "redirect"
-      enabled     = true
-      action_parameters = {
-        from_value = {
-          status_code           = 301
-          preserve_query_string = true
-          target_url = {
-            expression = "concat(\"https://bsoyka.me/blog\", http.request.uri.path)"
           }
         }
       }
