@@ -1,0 +1,5 @@
+collections:
+  - name: community.general
+    version: ">=14.0.0,<15.0.0"
+  - name: hifis.toolkit
+    version: ">=7.1.0,<8.0.0"

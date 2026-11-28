@@ -1,0 +1,29 @@
+common_timezone: America/Chicago
+common_packages:
+  - curl
+  - git
+  - htop
+  - jq
+  - nano
+  - unzip
+  - zip
+
+# Unattended upgrades, passed to hifis.toolkit.unattended_upgrades in tasks/main.yml.
+# Setting origins *replaces* the role's built-in list, so Debian's two security
+# patterns are repeated here alongside the extra sources.
+common_unattended_origins_patterns:
+  - "origin=Debian,codename=${distro_codename},label=Debian-Security"
+  - "origin=Debian,codename=${distro_codename}-security,label=Debian-Security"
+  - "origin=Raspberry Pi Foundation,codename=${distro_codename}"
+  - "origin=Tailscale"
+common_unattended_automatic_reboot: false
+common_unattended_remove_unused_dependencies: true
+common_unattended_remove_unused_kernel_packages: true
+
+# Maintenance window (Central time): refresh package lists ~2:30, install updates ~3:00.
+# Kept clear of Home Assistant's nightly backup around 4:30-5:30.
+common_unattended_timer_override: true
+common_unattended_list_refresh_time: "*-*-* 02:30"
+common_unattended_list_refresh_delay: "15m"
+common_unattended_upgrade_time: "*-*-* 03:00"
+common_unattended_upgrade_delay: "30m"

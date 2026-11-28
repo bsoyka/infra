@@ -1,0 +1,9 @@
+[project]
+name = "infra-ansible"
+version = "0.1.0"
+description = "Ansible for my always-on machines"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "ansible>=15.0.0",
+]

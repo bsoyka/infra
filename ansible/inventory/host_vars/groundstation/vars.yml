@@ -1,0 +1,3 @@
+ansible_host: groundstation
+ansible_user: bsoyka
+tailscale_exit_node: true

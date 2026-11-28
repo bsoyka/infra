@@ -1,0 +1,32 @@
+- name: Ensure timezone is set
+  become: true
+  community.general.timezone:
+    name: "{{ common_timezone }}"
+
+- name: Ensure common packages are installed
+  become: true
+  ansible.builtin.apt:
+    name: "{{ common_packages }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+    autoremove: true
+
+- name: Configure unattended upgrades
+  ansible.builtin.import_role:
+    name: hifis.toolkit.unattended_upgrades
+  vars:
+    unattended_origins_patterns: "{{ common_unattended_origins_patterns }}"
+    unattended_automatic_reboot: "{{ common_unattended_automatic_reboot }}"
+    unattended_remove_unused_dependencies: "{{ common_unattended_remove_unused_dependencies }}"
+    unattended_remove_unused_kernel_packages: "{{ common_unattended_remove_unused_kernel_packages }}"
+    unattended_systemd_timer_override: "{{ common_unattended_timer_override }}"
+    unattended_apt_daily_oncalendar: "{{ common_unattended_list_refresh_time }}"
+    unattended_apt_daily_randomizeddelaysec: "{{ common_unattended_list_refresh_delay }}"
+    unattended_apt_daily_upgrade_oncalendar: "{{ common_unattended_upgrade_time }}"
+    unattended_apt_daily_upgrade_randomizeddelaysec: "{{ common_unattended_upgrade_delay }}"
+
+# Read-only checks; skipped in --check mode because nothing has been written yet.
+- name: Verify unattended upgrades
+  ansible.builtin.import_tasks: verify.yml
+  when: not ansible_check_mode
